@@ -1,1 +1,1 @@
-excuusexpert.github.io/home/
+excuusexpert.github.io
