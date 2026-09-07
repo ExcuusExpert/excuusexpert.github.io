@@ -44,6 +44,9 @@
 
     body {
       background-color: var(--bg-dark);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: var(--text-main);
       font-family: 'Plus Jakarta Sans', Arial, sans-serif;
       min-height: 100vh;
@@ -83,14 +86,12 @@
       gap: 28px;
     }
 
-    /* Fade out animatie voor verwijderen */
     .fade-out {
       opacity: 0 !important;
       transform: scale(0.9) translateY(-10px) !important;
       transition: opacity 0.3s ease, transform 0.3s ease !important;
     }
 
-    /* Top Bar & Theme Toggle */
     .top-bar {
       width: 100%;
       display: flex;
@@ -125,7 +126,6 @@
       background: rgba(255, 252, 0, 0.1);
     }
 
-    /* Klok & Header */
     .header {
       text-align: center;
       display: flex;
@@ -160,7 +160,6 @@
       font-size: 14px;
     }
 
-    /* Zoekbalk Widget */
     .search-box {
       width: 100%;
       max-width: 600px;
@@ -218,7 +217,6 @@
       flex-shrink: 0;
     }
 
-    /* Widgets Grid (Weer & To-Do) */
     .widgets-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -256,11 +254,8 @@
       transition: color 0.2s;
     }
 
-    .btn-icon-sm:hover {
-      color: var(--text-main);
-    }
+    .btn-icon-sm:hover { color: var(--text-main); }
 
-    /* Weer Widget Styling */
     .weather-info {
       display: flex;
       align-items: center;
@@ -268,22 +263,10 @@
       margin-top: 4px;
     }
 
-    .weather-temp {
-      font-size: 32px;
-      font-weight: 800;
-    }
+    .weather-temp { font-size: 32px; font-weight: 800; }
+    .weather-desc { font-size: 13px; color: var(--text-muted); }
 
-    .weather-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    /* To-Do Widget Styling */
-    .todo-input-row {
-      display: flex;
-      gap: 8px;
-    }
-
+    .todo-input-row { display: flex; gap: 8px; }
     .todo-input-row input {
       flex: 1;
       padding: 8px 12px;
@@ -294,7 +277,7 @@
       font-size: 13px;
     }
 
-    .todo-list {
+    .todo-list, .history-list {
       list-style: none;
       display: flex;
       flex-direction: column;
@@ -303,7 +286,7 @@
       overflow-y: auto;
     }
 
-    .todo-item {
+    .todo-item, .history-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -315,12 +298,34 @@
       transition: all 0.3s ease;
     }
 
+    .history-text {
+      cursor: pointer;
+      color: var(--text-main);
+      text-decoration: none;
+      flex-grow: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .history-text:hover { color: var(--primary); }
+
+    .history-tag {
+      font-size: 10px;
+      background: rgba(108, 99, 255, 0.2);
+      color: var(--primary);
+      padding: 2px 6px;
+      border-radius: 6px;
+      margin-left: 6px;
+      text-transform: uppercase;
+    }
+
     .todo-item.done span {
       text-decoration: line-through;
       color: var(--text-muted);
     }
 
-    .todo-empty {
+    .todo-empty, .history-empty {
       text-align: center;
       color: var(--text-muted);
       font-size: 13px;
@@ -328,22 +333,16 @@
       list-style: none;
     }
 
-    .todo-actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .todo-btn {
+    .todo-actions, .history-actions { display: flex; gap: 6px; }
+    .todo-btn, .history-btn {
       background: transparent;
       border: none;
       color: var(--text-muted);
       cursor: pointer;
       font-size: 12px;
     }
+    .todo-btn:hover, .history-btn:hover { color: #ef4444; }
 
-    .todo-btn:hover { color: var(--text-main); }
-
-    /* Action Bar */
     .action-bar {
       display: flex;
       justify-content: space-between;
@@ -352,10 +351,7 @@
       margin-top: 10px;
     }
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 800;
-    }
+    .section-title { font-size: 18px; font-weight: 800; }
 
     .btn-add {
       background: var(--card-bg);
@@ -377,7 +373,6 @@
       background: rgba(108, 99, 255, 0.15);
     }
 
-    /* Cards Grid */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -406,6 +401,22 @@
       box-shadow: 0 25px 60px rgba(108, 99, 255, 0.25);
     }
 
+    .pinned-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(108, 99, 255, 0.15);
+      border: 1px solid var(--border-hover);
+      color: var(--primary);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     .custom-card { cursor: grab; }
     .custom-card:active { cursor: grabbing; }
     .custom-card.dragging { opacity: 0.4; transform: scale(0.95); }
@@ -429,6 +440,7 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 16px;
+      margin-top: 10px;
       font-size: 28px;
       color: var(--primary);
     }
@@ -492,7 +504,6 @@
     .btn-edit:hover { background: rgba(108, 99, 255, 0.2); color: #fff; }
     .btn-delete:hover { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
 
-    /* Modals */
     .modal {
       display: none;
       position: fixed;
@@ -536,7 +547,6 @@
     .error-msg { color: #ef4444; font-size: 13px; display: none; }
     .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
 
-    /* Footer Snapchat Subtiel */
     .footer-snap {
       margin-top: 20px;
       font-size: 13px;
@@ -574,8 +584,10 @@
 </script>
   <div class="container">
     
-    <!-- Top Bar with Snapchat & Theme Toggle -->
     <div class="top-bar">
+      <button class="btn-icon" onclick="openBgModal()" title="Achtergrond & Kleuren Aanpassen">
+        <i class="fa-solid fa-palette"></i>
+      </button>
       <a href="https://www.snapchat.com/add/excuus-expert" target="_blank" rel="noopener noreferrer" class="btn-icon snap-icon" title="Volg op Snapchat voor updates">
         <i class="fa-brands fa-snapchat"></i>
       </a>
@@ -584,27 +596,28 @@
       </button>
     </div>
 
-    <!-- Header met Live Klok & Dynamische Begroeting -->
     <header class="header">
       <div class="clock-time" id="clockTime">00:00:00</div>
       <h1 class="greeting" id="greetingText">Goedemorgen</h1>
       <p class="subtitle">Al je favoriete apps, widgets en snelkoppelingen op één plek</p>
     </header>
 
-    <!-- Multifunctionele Zoekbalk -->
     <form class="search-box" onsubmit="executeSearch(event)">
       <select id="searchEngine" class="search-engine-select">
         <option value="google">Google</option>
         <option value="ddg">DuckDuckGo</option>
         <option value="youtube">YouTube</option>
+        <option value="wikipedia">Wikipedia</option>
+        <option value="bing">Bing</option>
+        <option value="yahoo">Yahoo</option>
+        <option value="images">Google Afbeeldingen</option>
+        <option value="brave">Brave</option>
       </select>
       <input type="text" id="searchInput" class="search-input" placeholder="Zoeken op het web..." autofocus />
       <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 
-    <!-- Widgets Section (Weer & To-Do) -->
     <div class="widgets-grid">
-      <!-- Weer Widget -->
       <div class="widget-card">
         <div class="widget-title">
           <span><i class="fa-solid fa-cloud-sun"></i> Weerbericht</span>
@@ -621,7 +634,6 @@
         </div>
       </div>
 
-      <!-- Snelle Notities / To-Do Widget -->
       <div class="widget-card">
         <div class="widget-title">
           <span><i class="fa-solid fa-list-check"></i> Snelle Taken</span>
@@ -632,9 +644,18 @@
         </div>
         <ul class="todo-list" id="todoList"></ul>
       </div>
+
+      <div class="widget-card">
+        <div class="widget-title">
+          <span><i class="fa-solid fa-clock-rotate-left"></i> Zoekgeschiedenis</span>
+          <button class="btn-icon-sm" onclick="clearAllHistory()" title="Alles wissselen">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+        <ul class="history-list" id="historyList"></ul>
+      </div>
     </div>
 
-    <!-- Action Bar & Cards Grid -->
     <div class="action-bar">
       <h2 class="section-title">Mijn Snelkoppelingen</h2>
       <button class="btn-add" onclick="openAddModal()">
@@ -643,30 +664,31 @@
     </div>
 
     <div class="cards-grid" id="cardsGrid">
-      <!-- Vaste Cards -->
       <div class="card">
+        <div class="pinned-badge"><i class="fa-solid fa-thumbtack"></i> Gepind</div>
         <div class="card-icon-wrapper"><img src="jouw-logo.png" class="logo-img" alt="Logo"></div>
         <h2 class="card-title">ExcuusExpert</h2>
         <p class="card-desc">Genereer bliksemsnel de beste excuses.</p>
-        <a href="https://excuusexpert.github.io/excuusexpert/" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="https://excuusexpert.github.io/excuusexpert/" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
       </div>
 
       <div class="card">
+        <div class="pinned-badge"><i class="fa-solid fa-thumbtack"></i> Gepind</div>
         <div class="card-icon-wrapper"><img src="favicon.png" class="logo-img" alt="Logo"></div>
         <h2 class="card-title">StudyTrack</h2>
         <p class="card-desc">Overzicht over huiswerk en toetsen.</p>
-        <a href="https://excuusexpert.github.io/studytrack/" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="https://excuusexpert.github.io/studytrack/" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
       </div>
 
       <div class="card">
+        <div class="pinned-badge"><i class="fa-solid fa-thumbtack"></i> Gepind</div>
         <div class="card-icon-wrapper"><img src="gamepad.png" class="logo-img" alt="Logo"></div>
         <h2 class="card-title">Snake</h2>
         <p class="card-desc">Speel Snake als je je verveelt.</p>
-        <a href="https://excuusexpert.github.io/snake/" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="https://excuusexpert.github.io/snake/" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
       </div>
     </div>
 
-    <!-- Subtiele Snapchat Footer -->
     <footer class="footer-snap">
       <a href="https://www.snapchat.com/add/excuus-expert" target="_blank" rel="noopener noreferrer">
         <i class="fa-brands fa-snapchat" style="color: #FFFC00; font-size: 16px;"></i> Volg mij op Snapchat voor de laatste updates
@@ -675,7 +697,32 @@
 
   </div>
 
-  <!-- Modal voor Stad Instellen -->
+  <!-- Modal voor Custom Achtergrond & Hex Color Picker -->
+  <div class="modal" id="bgModal">
+    <div class="modal-content">
+      <h3 class="modal-title">Achtergrond & Kleur</h3>
+      <p class="modal-text">Kies een achtergrondtype:</p>
+      <select id="bgType" onchange="toggleBgTypeInput()">
+        <option value="default">Standaard Kleurthema</option>
+        <option value="color">Aangepaste Achtergrondkleur (Hex/Kleur)</option>
+        <option value="image">Aangepaste Afbeelding (URL)</option>
+      </select>
+
+      <!-- Hex Color Picker & Input Combi -->
+      <div id="colorPickerGroup" style="display: none; align-items: center; gap: 10px;">
+        <input type="color" id="bgHexColorPicker" value="#07090e" style="width: 50px; height: 42px; padding: 0; border: none; background: transparent; cursor: pointer; border-radius: 8px;">
+        <input type="text" id="bgHexTextInput" placeholder="#07090e" maxlength="7" style="flex: 1;">
+      </div>
+
+      <input type="text" id="bgValInput" placeholder="https://site.com/image.jpg" style="display: none;">
+
+      <div class="modal-actions">
+        <button class="btn-add" style="background: transparent;" onclick="closeBgModal()">Annuleren</button>
+        <button class="btn-add" style="background: var(--primary-gradient);" onclick="saveCustomBg()">Opslaan</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" id="cityModal">
     <div class="modal-content">
       <h3 class="modal-title">Stad instellen</h3>
@@ -688,7 +735,6 @@
     </div>
   </div>
 
-  <!-- Modal voor Toevoegen / Bewerken van Snelkoppelingen -->
   <div class="modal" id="addModal">
     <div class="modal-content">
       <h3 class="modal-title" id="addModalTitle">Website toevoegen</h3>
@@ -714,7 +760,6 @@
     </div>
   </div>
 
-  <!-- Modal voor Verwijderen -->
   <div class="modal" id="deleteModal">
     <div class="modal-content">
       <h3 class="modal-title">Snelkoppeling verwijderen</h3>
@@ -728,19 +773,50 @@
   </div>
 
   <script>
-    /* Global State */
     let customBookmarks = JSON.parse(localStorage.getItem('portal_bookmarks')) || [];
     let todos = JSON.parse(localStorage.getItem('portal_todos')) || [];
+    let searchHistory = JSON.parse(localStorage.getItem('portal_search_history')) || [];
     let isLightTheme = localStorage.getItem('portal_theme') === 'light';
     let pendingDeleteIndex = null;
     let editingIndex = null;
     let draggedIndex = null;
 
-    /* Initialize Theme */
     if (isLightTheme) {
       document.body.classList.add('light-theme');
       document.getElementById('themeBtn').innerHTML = '<i class="fa-solid fa-sun"></i>';
     }
+
+    /* Hex Color Sync listeners */
+    const bgColorPicker = document.getElementById('bgHexColorPicker');
+    const bgHexInput = document.getElementById('bgHexTextInput');
+
+    bgColorPicker.addEventListener('input', (e) => {
+      bgHexInput.value = e.target.value;
+    });
+
+    bgHexInput.addEventListener('input', (e) => {
+      let val = e.target.value;
+      if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9A-F]{6}$/i.test(val)) {
+        bgColorPicker.value = val;
+      }
+    });
+
+    function applySavedBg() {
+      const bgType = localStorage.getItem('portal_bg_type') || 'default';
+      const bgVal = localStorage.getItem('portal_bg_val') || '';
+
+      if (bgType === 'color' && bgVal) {
+        document.body.style.backgroundImage = 'none';
+        document.body.style.backgroundColor = bgVal;
+      } else if (bgType === 'image' && bgVal) {
+        document.body.style.backgroundImage = `url('${bgVal}')`;
+      } else {
+        document.body.style.backgroundImage = '';
+        document.body.style.backgroundColor = '';
+      }
+    }
+    applySavedBg();
 
     function toggleTheme() {
       isLightTheme = !isLightTheme;
@@ -749,7 +825,50 @@
       document.getElementById('themeBtn').innerHTML = isLightTheme ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     }
 
-    /* Live Klok & Dynamische Begroeting */
+    function openBgModal() {
+      const bgType = localStorage.getItem('portal_bg_type') || 'default';
+      const bgVal = localStorage.getItem('portal_bg_val') || '';
+
+      document.getElementById('bgType').value = bgType;
+      if (bgType === 'color') {
+        bgHexInput.value = bgVal || '#07090e';
+        if (/^#[0-9A-F]{6}$/i.test(bgVal)) bgColorPicker.value = bgVal;
+      } else if (bgType === 'image') {
+        document.getElementById('bgValInput').value = bgVal;
+      }
+
+      toggleBgTypeInput();
+      document.getElementById('bgModal').style.display = 'flex';
+    }
+
+    function closeBgModal() {
+      document.getElementById('bgModal').style.display = 'none';
+    }
+
+    function toggleBgTypeInput() {
+      const type = document.getElementById('bgType').value;
+      document.getElementById('colorPickerGroup').style.display = type === 'color' ? 'flex' : 'none';
+      document.getElementById('bgValInput').style.display = type === 'image' ? 'block' : 'none';
+    }
+
+    function saveCustomBg() {
+      const type = document.getElementById('bgType').value;
+      let val = '';
+
+      if (type === 'color') {
+        val = bgHexInput.value.trim();
+        if (val && !val.startsWith('#')) val = '#' + val;
+      } else if (type === 'image') {
+        val = document.getElementById('bgValInput').value.trim();
+      }
+
+      localStorage.setItem('portal_bg_type', type);
+      localStorage.setItem('portal_bg_val', val);
+
+      applySavedBg();
+      closeBgModal();
+    }
+
     function updateClock() {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
@@ -769,10 +888,10 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    /* Multifunctionele Zoekbalk (Opent in hetzelfde tabblad) */
     function executeSearch(e) {
-      e.preventDefault();
-      const query = document.getElementById('searchInput').value.trim();
+      if (e) e.preventDefault();
+      const input = document.getElementById('searchInput');
+      const query = input.value.trim();
       const engine = document.getElementById('searchEngine').value;
       if (!query) return;
 
@@ -780,11 +899,81 @@
       if (engine === 'google') searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
       else if (engine === 'ddg') searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
       else if (engine === 'youtube') searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+      else if (engine === 'wikipedia') searchUrl = `https://nl.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`;
+      else if (engine === 'bing') searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
+      else if (engine === 'yahoo') searchUrl = `https://search.yahoo.com/search?p=${encodeURIComponent(query)}`;
+      else if (engine === 'images') searchUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(query)}`;
+      else if (engine === 'brave') searchUrl = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
 
-      window.location.href = searchUrl;
+      window.open(searchUrl, '_blank');
+
+      addSearchHistory(query, engine);
+      input.value = '';
     }
 
-    /* Weer Widget met handmatige stadselectie */
+    function renderHistory() {
+      const list = document.getElementById('historyList');
+      list.innerHTML = '';
+
+      if (searchHistory.length === 0) {
+        list.innerHTML = '<li class="history-empty">Geen zoekopdrachten bewaard</li>';
+        return;
+      }
+
+      searchHistory.slice().reverse().forEach((item, realIndex) => {
+        const originalIndex = searchHistory.length - 1 - realIndex;
+        const li = document.createElement('li');
+        li.className = 'history-item';
+        li.id = `history-item-${originalIndex}`;
+        li.innerHTML = `
+          <a class="history-text" onclick="reSearch('${item.query.replace(/'/g, "\\'")}', '${item.engine}')" title="Opnieuw zoeken">
+            ${item.query} <span class="history-tag">${item.engine}</span>
+          </a>
+          <div class="history-actions">
+            <button class="history-btn" onclick="deleteHistoryItem(${originalIndex})" title="Verwijderen"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    function addSearchHistory(query, engine) {
+      searchHistory.push({ query, engine });
+      if (searchHistory.length > 20) searchHistory.shift();
+      localStorage.setItem('portal_search_history', JSON.stringify(searchHistory));
+      renderHistory();
+    }
+
+    function reSearch(query, engine) {
+      document.getElementById('searchInput').value = query;
+      document.getElementById('searchEngine').value = engine;
+      executeSearch();
+    }
+
+    function deleteHistoryItem(index) {
+      const item = document.getElementById(`history-item-${index}`);
+      if (item) {
+        item.classList.add('fade-out');
+        setTimeout(() => {
+          searchHistory.splice(index, 1);
+          localStorage.setItem('portal_search_history', JSON.stringify(searchHistory));
+          renderHistory();
+        }, 300);
+      } else {
+        searchHistory.splice(index, 1);
+        localStorage.setItem('portal_search_history', JSON.stringify(searchHistory));
+        renderHistory();
+      }
+    }
+
+    function clearAllHistory() {
+      searchHistory = [];
+      localStorage.setItem('portal_search_history', JSON.stringify(searchHistory));
+      renderHistory();
+    }
+
+    renderHistory();
+
     function fetchWeather() {
       const savedLat = localStorage.getItem('portal_city_lat');
       const savedLon = localStorage.getItem('portal_city_lon');
@@ -858,7 +1047,6 @@
 
     fetchWeather();
 
-    /* To-Do Widget met Empty State & Fade-out Animaties */
     function renderTodos() {
       const list = document.getElementById('todoList');
       list.innerHTML = '';
@@ -916,7 +1104,6 @@
     }
     renderTodos();
 
-    /* Custom Bookmarks Logic met Fade-out Animaties */
     function getDomain(urlStr) {
       try {
         let formattedUrl = urlStr.startsWith('http://') || urlStr.startsWith('https://') ? urlStr : 'https://' + urlStr;
@@ -968,7 +1155,6 @@
           <a href="${bm.url}" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
         `;
 
-        // Drag & Drop
         card.addEventListener('dragstart', (e) => {
           draggedIndex = index;
           card.classList.add('dragging');
@@ -1102,12 +1288,12 @@
       }
     }
 
-    /* Escape-toets ondersteuning om vensters te sluiten */
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeAddModal();
         closeDeleteModal();
         closeCityModal();
+        closeBgModal();
       }
     });
 
