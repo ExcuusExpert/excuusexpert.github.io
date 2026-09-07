@@ -23,7 +23,7 @@
       --border-color: rgba(255, 255, 255, 0.08);
       --border-hover: rgba(108, 99, 255, 0.6);
       --primary: #6c63ff;
-      --primary-gradient: linear-gradient(135deg, #6c63ff 0%, #4f46e5 100%);
+      --primary-gradient: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
       --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
@@ -131,7 +131,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
 
     .clock-time {
@@ -147,6 +147,14 @@
       background: linear-gradient(135deg, #0f172a 30%, #4f46e5 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+
+    .clock-date {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 4px;
+      text-transform: capitalize;
     }
 
     .greeting {
@@ -172,6 +180,7 @@
       border-radius: 16px;
       backdrop-filter: blur(20px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
     }
 
     .search-engine-select {
@@ -201,6 +210,17 @@
       font-size: 15px;
       font-family: inherit;
       padding: 8px;
+    }
+
+    .search-shortcut-badge {
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: monospace;
+      pointer-events: none;
     }
 
     .search-btn {
@@ -393,6 +413,7 @@
       position: relative;
       transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      touch-action: manipulation;
     }
 
     .card:hover {
@@ -427,8 +448,10 @@
       top: 14px;
       left: 14px;
       color: var(--text-muted);
-      font-size: 12px;
-      opacity: 0.5;
+      font-size: 14px;
+      opacity: 0.6;
+      padding: 4px;
+      touch-action: none;
     }
 
     .card-icon-wrapper {
@@ -522,11 +545,13 @@
       border-radius: 20px;
       padding: 24px;
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       display: flex;
       flex-direction: column;
       gap: 14px;
       color: var(--text-main);
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .modal-title { font-size: 20px; font-weight: 800; }
@@ -543,6 +568,59 @@
     }
 
     .modal input:focus, .modal select:focus { outline: none; border-color: var(--primary); }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: opacity 0.2s ease;
+    }
+
+    .color-row input[type="color"] {
+      width: 50px;
+      height: 42px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .backup-section {
+      border-top: 1px solid var(--border-color);
+      padding-top: 14px;
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .backup-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .backup-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .backup-btn:hover {
+      border-color: var(--border-hover);
+      background: rgba(108, 99, 255, 0.15);
+    }
 
     .error-msg { color: #ef4444; font-size: 13px; display: none; }
     .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
@@ -585,7 +663,7 @@
   <div class="container">
     
     <div class="top-bar">
-      <button class="btn-icon" onclick="openBgModal()" title="Achtergrond & Kleuren Aanpassen">
+      <button class="btn-icon" onclick="openBgModal()" title="Achtergrond, Accentkleur & Back-up">
         <i class="fa-solid fa-palette"></i>
       </button>
       <a href="https://www.snapchat.com/add/excuus-expert" target="_blank" rel="noopener noreferrer" class="btn-icon snap-icon" title="Volg op Snapchat voor updates">
@@ -598,6 +676,7 @@
 
     <header class="header">
       <div class="clock-time" id="clockTime">00:00:00</div>
+      <div class="clock-date" id="clockDate">Laden...</div>
       <h1 class="greeting" id="greetingText">Goedemorgen</h1>
       <p class="subtitle">Al je favoriete apps, widgets en snelkoppelingen op één plek</p>
     </header>
@@ -614,6 +693,7 @@
         <option value="brave">Brave</option>
       </select>
       <input type="text" id="searchInput" class="search-input" placeholder="Zoeken op het web..." autofocus />
+      <span class="search-shortcut-badge" title="Druk op / om te zoeken">/</span>
       <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 
@@ -648,7 +728,7 @@
       <div class="widget-card">
         <div class="widget-title">
           <span><i class="fa-solid fa-clock-rotate-left"></i> Zoekgeschiedenis</span>
-          <button class="btn-icon-sm" onclick="clearAllHistory()" title="Alles wissselen">
+          <button class="btn-icon-sm" onclick="clearAllHistory()" title="Alles wisselen">
             <i class="fa-solid fa-trash-can"></i>
           </button>
         </div>
@@ -697,24 +777,41 @@
 
   </div>
 
-  <!-- Modal voor Custom Achtergrond & Hex Color Picker -->
+  <!-- Modal voor Achtergrond, Accentkleur & Back-up -->
   <div class="modal" id="bgModal">
     <div class="modal-content">
-      <h3 class="modal-title">Achtergrond & Kleur</h3>
-      <p class="modal-text">Kies een achtergrondtype:</p>
+      <h3 class="modal-title">Thema & Instellingen</h3>
+      
+      <p class="modal-text" style="font-weight: 700;">Achtergrondtype:</p>
       <select id="bgType" onchange="toggleBgTypeInput()">
         <option value="default">Standaard Kleurthema</option>
-        <option value="color">Aangepaste Achtergrondkleur (Hex/Kleur)</option>
+        <option value="color">Aangepaste Achtergrondkleur (Hex)</option>
         <option value="image">Aangepaste Afbeelding (URL)</option>
       </select>
 
-      <!-- Hex Color Picker & Input Combi -->
-      <div id="colorPickerGroup" style="display: none; align-items: center; gap: 10px;">
-        <input type="color" id="bgHexColorPicker" value="#07090e" style="width: 50px; height: 42px; padding: 0; border: none; background: transparent; cursor: pointer; border-radius: 8px;">
+      <div id="colorPickerGroup" class="color-row" style="display: none;">
+        <input type="color" id="bgHexColorPicker" value="#07090e">
         <input type="text" id="bgHexTextInput" placeholder="#07090e" maxlength="7" style="flex: 1;">
       </div>
 
       <input type="text" id="bgValInput" placeholder="https://site.com/image.jpg" style="display: none;">
+
+      <!-- Accentkleur Selectie (Volledig verborgen bij standaard thema) -->
+      <p class="modal-text" id="accentColorLabel" style="font-weight: 700; margin-top: 6px; display: none;">Accentkleur:</p>
+      <div class="color-row" id="accentColorGroup" style="display: none;">
+        <input type="color" id="primaryHexColorPicker" value="#6c63ff" onchange="handleCustomColorChange()">
+        <input type="text" id="primaryHexTextInput" value="#6c63ff" placeholder="#6c63ff" maxlength="7" style="flex: 1;">
+      </div>
+
+      <!-- JSON Export & Import Section -->
+      <div class="backup-section">
+        <p class="modal-text" style="font-weight: 700;">Data Back-up (JSON):</p>
+        <div class="backup-actions">
+          <button type="button" class="backup-btn" onclick="exportData()"><i class="fa-solid fa-download"></i> Exporteren</button>
+          <button type="button" class="backup-btn" onclick="document.getElementById('importFileInput').click()"><i class="fa-solid fa-upload"></i> Importeren</button>
+          <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="importData(event)">
+        </div>
+      </div>
 
       <div class="modal-actions">
         <button class="btn-add" style="background: transparent;" onclick="closeBgModal()">Annuleren</button>
@@ -773,6 +870,7 @@
   </div>
 
   <script>
+    const DEFAULT_ACCENT_HEX = "#6c63ff";
     let customBookmarks = JSON.parse(localStorage.getItem('portal_bookmarks')) || [];
     let todos = JSON.parse(localStorage.getItem('portal_todos')) || [];
     let searchHistory = JSON.parse(localStorage.getItem('portal_search_history')) || [];
@@ -786,19 +884,65 @@
       document.getElementById('themeBtn').innerHTML = '<i class="fa-solid fa-sun"></i>';
     }
 
-    /* Hex Color Sync listeners */
+    /* Primary Accent Color apply */
+    function applyPrimaryColor(color) {
+      if (!color || !/^#[0-9A-F]{6}$/i.test(color)) return;
+      document.documentElement.style.setProperty('--primary', color);
+      document.documentElement.style.setProperty('--primary-gradient', `linear-gradient(135deg, ${color} 0%, #4f46e5 100%)`);
+    }
+
+    function setAccentColor(hexValue) {
+      applyPrimaryColor(hexValue);
+      document.getElementById('primaryHexColorPicker').value = hexValue;
+      document.getElementById('primaryHexTextInput').value = hexValue;
+    }
+
+    function saveSettings(colorHex) {
+      localStorage.setItem('portal_primary_color', colorHex);
+    }
+
+    function loadSettings() {
+      const bgType = localStorage.getItem('portal_bg_type') || 'default';
+      if (bgType === 'default') {
+        setAccentColor(DEFAULT_ACCENT_HEX);
+      } else {
+        const savedColor = localStorage.getItem('portal_primary_color') || DEFAULT_ACCENT_HEX;
+        setAccentColor(savedColor);
+      }
+    }
+
+    function handleCustomColorChange() {
+      const selectedColor = document.getElementById('primaryHexColorPicker').value;
+      setAccentColor(selectedColor);
+      saveSettings(selectedColor);
+    }
+
+    // Laad instellingen bij start
+    loadSettings();
+
+    /* Background Hex Color Sync */
     const bgColorPicker = document.getElementById('bgHexColorPicker');
     const bgHexInput = document.getElementById('bgHexTextInput');
-
-    bgColorPicker.addEventListener('input', (e) => {
-      bgHexInput.value = e.target.value;
-    });
-
+    bgColorPicker.addEventListener('input', (e) => { bgHexInput.value = e.target.value; });
     bgHexInput.addEventListener('input', (e) => {
       let val = e.target.value;
       if (!val.startsWith('#')) val = '#' + val;
+      if (/^#[0-9A-F]{6}$/i.test(val)) bgColorPicker.value = val;
+    });
+
+    /* Primary Hex Color Sync */
+    const primaryColorPicker = document.getElementById('primaryHexColorPicker');
+    const primaryHexInput = document.getElementById('primaryHexTextInput');
+    primaryColorPicker.addEventListener('input', (e) => { 
+      primaryHexInput.value = e.target.value; 
+      handleCustomColorChange();
+    });
+    primaryHexInput.addEventListener('input', (e) => {
+      let val = e.target.value;
+      if (!val.startsWith('#')) val = '#' + val;
       if (/^#[0-9A-F]{6}$/i.test(val)) {
-        bgColorPicker.value = val;
+        primaryColorPicker.value = val;
+        handleCustomColorChange();
       }
     });
 
@@ -814,6 +958,7 @@
       } else {
         document.body.style.backgroundImage = '';
         document.body.style.backgroundColor = '';
+        setAccentColor(DEFAULT_ACCENT_HEX);
       }
     }
     applySavedBg();
@@ -837,6 +982,7 @@
         document.getElementById('bgValInput').value = bgVal;
       }
 
+      loadSettings();
       toggleBgTypeInput();
       document.getElementById('bgModal').style.display = 'flex';
     }
@@ -849,11 +995,32 @@
       const type = document.getElementById('bgType').value;
       document.getElementById('colorPickerGroup').style.display = type === 'color' ? 'flex' : 'none';
       document.getElementById('bgValInput').style.display = type === 'image' ? 'block' : 'none';
+
+      const accentGroup = document.getElementById('accentColorGroup');
+      const accentLabel = document.getElementById('accentColorLabel');
+
+      if (type === 'default') {
+        setAccentColor(DEFAULT_ACCENT_HEX);
+        accentGroup.style.display = 'none';
+        if (accentLabel) accentLabel.style.display = 'none';
+      } else {
+        accentGroup.style.display = 'flex';
+        if (accentLabel) accentLabel.style.display = 'block';
+        const savedColor = localStorage.getItem('portal_primary_color') || DEFAULT_ACCENT_HEX;
+        setAccentColor(savedColor);
+      }
     }
 
     function saveCustomBg() {
       const type = document.getElementById('bgType').value;
       let val = '';
+
+      if (type === 'default') {
+        setAccentColor(DEFAULT_ACCENT_HEX);
+        saveSettings(DEFAULT_ACCENT_HEX);
+      } else {
+        handleCustomColorChange();
+      }
 
       if (type === 'color') {
         val = bgHexInput.value.trim();
@@ -869,6 +1036,72 @@
       closeBgModal();
     }
 
+    /* Keyboard Shortcut: '/' to focus search bar */
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+      } else if (e.key === 'Escape') {
+        closeAddModal();
+        closeDeleteModal();
+        closeCityModal();
+        closeBgModal();
+      }
+    });
+
+    /* Export & Import JSON Backup */
+    function exportData() {
+      const backupData = {
+        bookmarks: customBookmarks,
+        todos: todos,
+        searchHistory: searchHistory,
+        bgType: localStorage.getItem('portal_bg_type') || 'default',
+        bgVal: localStorage.getItem('portal_bg_val') || '',
+        primaryColor: localStorage.getItem('portal_primary_color') || DEFAULT_ACCENT_HEX,
+        cityName: localStorage.getItem('portal_city_name') || '',
+        cityLat: localStorage.getItem('portal_city_lat') || '',
+        cityLon: localStorage.getItem('portal_city_lon') || '',
+        theme: localStorage.getItem('portal_theme') || 'dark'
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `excuusexpert-portal-backup-${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.bookmarks) localStorage.setItem('portal_bookmarks', JSON.stringify(data.bookmarks));
+          if (data.todos) localStorage.setItem('portal_todos', JSON.stringify(data.todos));
+          if (data.searchHistory) localStorage.setItem('portal_search_history', JSON.stringify(data.searchHistory));
+          if (data.bgType) localStorage.setItem('portal_bg_type', data.bgType);
+          if (data.bgVal) localStorage.setItem('portal_bg_val', data.bgVal);
+          if (data.primaryColor) localStorage.setItem('portal_primary_color', data.primaryColor);
+          if (data.cityName) localStorage.setItem('portal_city_name', data.cityName);
+          if (data.cityLat) localStorage.setItem('portal_city_lat', data.cityLat);
+          if (data.cityLon) localStorage.setItem('portal_city_lon', data.cityLon);
+          if (data.theme) localStorage.setItem('portal_theme', data.theme);
+
+          alert('Back-up succesvol geïmporteerd! De pagina wordt opnieuw geladen.');
+          location.reload();
+        } catch (err) {
+          alert('Fout bij importeren: Ongeldig JSON-bestand.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /* Clock & Full Date Update */
     function updateClock() {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
@@ -876,6 +1109,10 @@
       const seconds = String(now.getSeconds()).padStart(2, '0');
       
       document.getElementById('clockTime').innerText = `${hours}:${minutes}:${seconds}`;
+
+      const dateOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      const formattedDate = now.toLocaleDateString('nl-NL', dateOptions);
+      document.getElementById('clockDate').innerText = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
 
       let greeting = "Goedemorgen";
       const h = now.getHours();
@@ -1122,6 +1359,10 @@
       return formatted.replace(/\/$/, "");
     }
 
+    /* Touch Drag & Drop support variables */
+    let touchStartIndex = null;
+    let touchTargetIndex = null;
+
     function renderBookmarks() {
       const grid = document.getElementById('cardsGrid');
       document.querySelectorAll('.custom-card').forEach(el => el.remove());
@@ -1155,6 +1396,7 @@
           <a href="${bm.url}" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
         `;
 
+        /* Desktop HTML5 Drag & Drop */
         card.addEventListener('dragstart', (e) => {
           draggedIndex = index;
           card.classList.add('dragging');
@@ -1183,6 +1425,38 @@
             localStorage.setItem('portal_bookmarks', JSON.stringify(customBookmarks));
             renderBookmarks();
           }
+        });
+
+        /* Mobile Touch Drag & Drop */
+        const dragHandle = card.querySelector('.drag-handle');
+        dragHandle.addEventListener('touchstart', (e) => {
+          touchStartIndex = index;
+          card.classList.add('dragging');
+        }, { passive: true });
+
+        dragHandle.addEventListener('touchmove', (e) => {
+          const touch = e.touches[0];
+          const targetEl = document.elementFromPoint(touch.clientX, touch.clientY);
+          const targetCard = targetEl ? targetEl.closest('.custom-card') : null;
+
+          document.querySelectorAll('.custom-card').forEach(c => c.classList.remove('drag-over'));
+          if (targetCard && targetCard !== card) {
+            targetCard.classList.add('drag-over');
+            touchTargetIndex = parseInt(targetCard.dataset.index);
+          }
+        }, { passive: true });
+
+        dragHandle.addEventListener('touchend', () => {
+          card.classList.remove('dragging');
+          document.querySelectorAll('.custom-card').forEach(c => c.classList.remove('drag-over'));
+          if (touchStartIndex !== null && touchTargetIndex !== null && touchStartIndex !== touchTargetIndex) {
+            const movedItem = customBookmarks.splice(touchStartIndex, 1)[0];
+            customBookmarks.splice(touchTargetIndex, 0, movedItem);
+            localStorage.setItem('portal_bookmarks', JSON.stringify(customBookmarks));
+            renderBookmarks();
+          }
+          touchStartIndex = null;
+          touchTargetIndex = null;
         });
 
         grid.appendChild(card);
@@ -1287,15 +1561,6 @@
         closeDeleteModal();
       }
     }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeAddModal();
-        closeDeleteModal();
-        closeCityModal();
-        closeBgModal();
-      }
-    });
 
     renderBookmarks();
   </script>
