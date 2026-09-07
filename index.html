@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ExcuusExpert - Portal</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#6c63ff">
-<link rel="apple-touch-icon" href="icon-192.png">
- <script data-goatcounter="https://excuusexpert.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-  <!-- Google Site Verification -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6c63ff">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <script data-goatcounter="https://excuusexpert.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <meta name="google-site-verification" content="6CH9S9xC1Fp_FROwEj38SJQM01kB6wiO9QQFOhzRPNw" />
 
   <link rel="icon" type="image/png" href="icon-192.png">
@@ -83,6 +81,13 @@
       flex-direction: column;
       align-items: center;
       gap: 28px;
+    }
+
+    /* Fade out animatie voor verwijderen */
+    .fade-out {
+      opacity: 0 !important;
+      transform: scale(0.9) translateY(-10px) !important;
+      transition: opacity 0.3s ease, transform 0.3s ease !important;
     }
 
     /* Top Bar & Theme Toggle */
@@ -238,8 +243,21 @@
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
       color: var(--primary);
+    }
+
+    .btn-icon-sm {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .btn-icon-sm:hover {
+      color: var(--text-main);
     }
 
     /* Weer Widget Styling */
@@ -294,11 +312,20 @@
       border-radius: 10px;
       font-size: 13px;
       border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
     }
 
     .todo-item.done span {
       text-decoration: line-through;
       color: var(--text-muted);
+    }
+
+    .todo-empty {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      padding: 12px;
+      list-style: none;
     }
 
     .todo-actions {
@@ -369,7 +396,7 @@
       align-items: center;
       text-align: center;
       position: relative;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     }
 
@@ -549,7 +576,7 @@
     
     <!-- Top Bar with Snapchat & Theme Toggle -->
     <div class="top-bar">
-      <a href="https://www.snapchat.com/add/excuus-expert" target="_blank" class="btn-icon snap-icon" title="Volg op Snapchat voor updates">
+      <a href="https://www.snapchat.com/add/excuus-expert" target="_blank" rel="noopener noreferrer" class="btn-icon snap-icon" title="Volg op Snapchat voor updates">
         <i class="fa-brands fa-snapchat"></i>
       </a>
       <button class="btn-icon" id="themeBtn" onclick="toggleTheme()" title="Wissel Thema">
@@ -579,7 +606,12 @@
     <div class="widgets-grid">
       <!-- Weer Widget -->
       <div class="widget-card">
-        <div class="widget-title"><i class="fa-solid fa-cloud-sun"></i> Weerbericht</div>
+        <div class="widget-title">
+          <span><i class="fa-solid fa-cloud-sun"></i> Weerbericht</span>
+          <button class="btn-icon-sm" onclick="openCityModal()" title="Stad handmatig instellen">
+            <i class="fa-solid fa-gear"></i>
+          </button>
+        </div>
         <div class="weather-info">
           <div>
             <div class="weather-temp" id="weatherTemp">--°C</div>
@@ -591,7 +623,9 @@
 
       <!-- Snelle Notities / To-Do Widget -->
       <div class="widget-card">
-        <div class="widget-title"><i class="fa-solid fa-list-check"></i> Snelle Taken</div>
+        <div class="widget-title">
+          <span><i class="fa-solid fa-list-check"></i> Snelle Taken</span>
+        </div>
         <div class="todo-input-row">
           <input type="text" id="todoInput" placeholder="Nieuwe taak toevoegen..." onkeydown="if(event.key==='Enter') addTodo()" />
           <button class="btn-add" style="padding: 8px 14px;" onclick="addTodo()"><i class="fa-solid fa-plus"></i></button>
@@ -634,11 +668,24 @@
 
     <!-- Subtiele Snapchat Footer -->
     <footer class="footer-snap">
-      <a href="https://www.snapchat.com/add/excuus-expert" target="_blank">
+      <a href="https://www.snapchat.com/add/excuus-expert" target="_blank" rel="noopener noreferrer">
         <i class="fa-brands fa-snapchat" style="color: #FFFC00; font-size: 16px;"></i> Volg mij op Snapchat voor de laatste updates
       </a>
     </footer>
 
+  </div>
+
+  <!-- Modal voor Stad Instellen -->
+  <div class="modal" id="cityModal">
+    <div class="modal-content">
+      <h3 class="modal-title">Stad instellen</h3>
+      <p class="modal-text">Voer de naam van je stad in voor het weerbericht:</p>
+      <input type="text" id="cityNameInput" placeholder="Bijv. Utrecht, Rotterdam, Groningen">
+      <div class="modal-actions">
+        <button class="btn-add" style="background: transparent;" onclick="closeCityModal()">Annuleren</button>
+        <button class="btn-add" style="background: var(--primary-gradient);" onclick="saveCustomCity()">Opslaan</button>
+      </div>
+    </div>
   </div>
 
   <!-- Modal voor Toevoegen / Bewerken van Snelkoppelingen -->
@@ -722,7 +769,7 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    /* Multifunctionele Zoekbalk */
+    /* Multifunctionele Zoekbalk (Opent in hetzelfde tabblad) */
     function executeSearch(e) {
       e.preventDefault();
       const query = document.getElementById('searchInput').value.trim();
@@ -734,28 +781,35 @@
       else if (engine === 'ddg') searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
       else if (engine === 'youtube') searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
 
-      window.open(searchUrl, '_blank');
+      window.location.href = searchUrl;
     }
 
-    /* Weer Widget (Open-Meteo API) */
+    /* Weer Widget met handmatige stadselectie */
     function fetchWeather() {
-      if (navigator.geolocation) {
+      const savedLat = localStorage.getItem('portal_city_lat');
+      const savedLon = localStorage.getItem('portal_city_lon');
+      const savedName = localStorage.getItem('portal_city_name');
+
+      if (savedLat && savedLon) {
+        getWeather(savedLat, savedLon, savedName);
+      } else if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           pos => getWeather(pos.coords.latitude, pos.coords.longitude),
-          () => getWeather(52.3676, 4.9041) // Fallback naar Amsterdam
+          () => getWeather(52.3676, 4.9041, "Amsterdam")
         );
       } else {
-        getWeather(52.3676, 4.9041);
+        getWeather(52.3676, 4.9041, "Amsterdam");
       }
     }
 
-    async function getWeather(lat, lon) {
+    async function getWeather(lat, lon, cityName = "") {
       try {
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
         const data = await res.json();
         const temp = Math.round(data.current_weather.temperature);
         document.getElementById('weatherTemp').innerText = `${temp}°C`;
-        document.getElementById('weatherDesc').innerText = getWeatherDescription(data.current_weather.weathercode);
+        const desc = getWeatherDescription(data.current_weather.weathercode);
+        document.getElementById('weatherDesc').innerText = cityName ? `${cityName} • ${desc}` : desc;
       } catch (err) {
         document.getElementById('weatherDesc').innerText = "Kon weer niet laden";
       }
@@ -770,15 +824,54 @@
       if (code <= 99) return "Onweer";
       return "Wisselvallig";
     }
+
+    function openCityModal() {
+      document.getElementById('cityNameInput').value = localStorage.getItem('portal_city_name') || '';
+      document.getElementById('cityModal').style.display = 'flex';
+    }
+
+    function closeCityModal() {
+      document.getElementById('cityModal').style.display = 'none';
+    }
+
+    async function saveCustomCity() {
+      const cityName = document.getElementById('cityNameInput').value.trim();
+      if (!cityName) return;
+
+      try {
+        const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=nl`);
+        const data = await res.json();
+        if (data.results && data.results.length > 0) {
+          const place = data.results[0];
+          localStorage.setItem('portal_city_name', place.name);
+          localStorage.setItem('portal_city_lat', place.latitude);
+          localStorage.setItem('portal_city_lon', place.longitude);
+          closeCityModal();
+          getWeather(place.latitude, place.longitude, place.name);
+        } else {
+          alert('Stad niet gevonden. Probeer een andere zoekterm.');
+        }
+      } catch (err) {
+        alert('Fout bij ophalen van de locatiegegevens.');
+      }
+    }
+
     fetchWeather();
 
-    /* To-Do Widget */
+    /* To-Do Widget met Empty State & Fade-out Animaties */
     function renderTodos() {
       const list = document.getElementById('todoList');
       list.innerHTML = '';
+
+      if (todos.length === 0) {
+        list.innerHTML = '<li class="todo-empty">Geen taken voor vandaag 🎉</li>';
+        return;
+      }
+
       todos.forEach((todo, idx) => {
         const li = document.createElement('li');
         li.className = `todo-item ${todo.done ? 'done' : ''}`;
+        li.id = `todo-item-${idx}`;
         li.innerHTML = `
           <span>${todo.text}</span>
           <div class="todo-actions">
@@ -807,13 +900,23 @@
     }
 
     function deleteTodo(index) {
-      todos.splice(index, 1);
-      localStorage.setItem('portal_todos', JSON.stringify(todos));
-      renderTodos();
+      const item = document.getElementById(`todo-item-${index}`);
+      if (item) {
+        item.classList.add('fade-out');
+        setTimeout(() => {
+          todos.splice(index, 1);
+          localStorage.setItem('portal_todos', JSON.stringify(todos));
+          renderTodos();
+        }, 300);
+      } else {
+        todos.splice(index, 1);
+        localStorage.setItem('portal_todos', JSON.stringify(todos));
+        renderTodos();
+      }
     }
     renderTodos();
 
-    /* Custom Bookmarks Logic */
+    /* Custom Bookmarks Logic met Fade-out Animaties */
     function getDomain(urlStr) {
       try {
         let formattedUrl = urlStr.startsWith('http://') || urlStr.startsWith('https://') ? urlStr : 'https://' + urlStr;
@@ -862,7 +965,7 @@
           <div class="card-icon-wrapper">${iconHtml}</div>
           <h2 class="card-title">${bm.title}</h2>
           <p class="card-desc">Snelkoppeling naar ${domain}</p>
-          <a href="${bm.url}" target="_blank" class="btn-visit">Openen <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          <a href="${bm.url}" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
         `;
 
         // Drag & Drop
@@ -979,12 +1082,34 @@
 
     function confirmDelete() {
       if (pendingDeleteIndex !== null) {
-        customBookmarks.splice(pendingDeleteIndex, 1);
-        localStorage.setItem('portal_bookmarks', JSON.stringify(customBookmarks));
-        renderBookmarks();
+        const cardEl = document.querySelector(`.custom-card[data-index="${pendingDeleteIndex}"]`);
+        if (cardEl) {
+          cardEl.classList.add('fade-out');
+          closeDeleteModal();
+          setTimeout(() => {
+            customBookmarks.splice(pendingDeleteIndex, 1);
+            localStorage.setItem('portal_bookmarks', JSON.stringify(customBookmarks));
+            renderBookmarks();
+          }, 300);
+        } else {
+          customBookmarks.splice(pendingDeleteIndex, 1);
+          localStorage.setItem('portal_bookmarks', JSON.stringify(customBookmarks));
+          closeDeleteModal();
+          renderBookmarks();
+        }
+      } else {
+        closeDeleteModal();
       }
-      closeDeleteModal();
     }
+
+    /* Escape-toets ondersteuning om vensters te sluiten */
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAddModal();
+        closeDeleteModal();
+        closeCityModal();
+      }
+    });
 
     renderBookmarks();
   </script>
