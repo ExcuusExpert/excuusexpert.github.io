@@ -1,4 +1,4 @@
-const CACHE_NAME = 'excuusexpert-v1';
+const CACHE_NAME = 'excuusexpert-v2';
 const ASSETS = [
   './',
   './index.html',
