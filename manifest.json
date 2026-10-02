@@ -1,11 +1,11 @@
 {
-  "name": "ExcuusExpert Portal",
+  "name": "ExcuusExpert Zoeken",
   "short_name": "ExcuusExpert",
-  "description": "Al je favoriete apps, widgets en snelkoppelingen op één plek.",
+  "description": "Zoek op het web, in afbeeldingen, video's, kaarten en Wikipedia.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#08090d",
-  "theme_color": "#6c63ff",
+  "background_color": "#17201c",
+  "theme_color": "#17201c",
   "orientation": "portrait-primary",
   "icons": [
     {
