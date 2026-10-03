@@ -1,10 +1,9 @@
-const CACHE_NAME = 'excuusexpert-v3';
+const CACHE_NAME = 'excuusexpert-v4';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  './icon.svg'
 ];
 
 self.addEventListener('install', (e) => {

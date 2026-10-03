@@ -2,14 +2,13 @@
 <html lang="nl" style="--primary: #d94f32; --primary-gradient: linear-gradient(135deg, #e46643 0%, #c83f2b 100%);"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ExcuusExpert Zoeken</title>
+  <meta name="description" content="Een snelle, persoonlijke browserstartpagina met zoeken, favoriete websites en handige widgets.">
+  <title>ExcuusExpert Start</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#17201c">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <script data-goatcounter="https://excuusexpert.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
   <meta name="google-site-verification" content="6CH9S9xC1Fp_FROwEj38SJQM01kB6wiO9QQFOhzRPNw">
 
-  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
@@ -695,7 +694,10 @@
     .top-bar { gap: 8px; }
     .btn-icon { width: 40px; height: 40px; border-radius: 8px; background: var(--card-bg); }
     .header { gap: 8px; padding: 30px 0 4px; }
-    .clock-time, .clock-date, #greetingText { display: none; }
+    .welcome-meta { display: flex; align-items: center; justify-content: center; gap: 9px; margin-bottom: 2px; }
+    .clock-time { display: inline; color: var(--text-muted); background: none; font-size: 12px; font-weight: 600; letter-spacing: 0; -webkit-text-fill-color: var(--text-muted); }
+    .clock-date { display: inline; margin: 0; color: var(--text-muted); font-size: 12px; font-weight: 500; }
+    #greetingText { display: inline; color: var(--primary); font-size: 12px; font-weight: 800; }
     .header::before {
       content: 'EXCUUSEXPERT  /  ZOEK';
       color: var(--primary);
@@ -747,8 +749,59 @@
     .search-btn { width: 46px; height: 46px; border-radius: 8px; font-size: 16px; }
     .search-shortcut-badge { border-radius: 5px; }
     .search-note { margin: -12px auto 2px; color: var(--text-muted); font-size: 12px; text-align: center; }
+    .search-box { position: relative; z-index: 2; overflow: visible; }
+    .search-suggestions[hidden] { display: none; }
+    .search-suggestions {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background: var(--card-bg);
+      box-shadow: 0 18px 44px rgba(10, 24, 15, 0.2);
+    }
+    .search-suggestion {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 48px;
+      padding: 8px 12px;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--text-main);
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+    }
+    .search-suggestion:hover, .search-suggestion[aria-selected="true"] { background: var(--input-bg); }
+    .search-suggestion-icon { width: 20px; color: var(--primary); text-align: center; }
+    .search-suggestion-copy { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 2px; }
+    .search-suggestion-title { overflow: hidden; font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+    .search-suggestion-detail { overflow: hidden; color: var(--text-muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+    .search-suggestion-type { flex: 0 0 auto; color: var(--text-muted); font-size: 10px; text-transform: uppercase; }
+    .history-text { border: 0; padding: 0; background: transparent; font: inherit; text-align: left; }
+    .bookmark-monogram {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      place-items: center;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 800;
+    }
 
-    .widgets-grid { gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .widgets-grid { order: 2; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .action-bar, .cards-grid { order: 1; }
     .widget-card, .card {
       border: 1px solid var(--border-color);
       border-radius: 8px;
@@ -804,7 +857,7 @@
       .action-bar .btn-add i { font-size: 14px; }
     }
   </style>
-<script>(function(){function send(t,a){try{window.parent.postMessage({type:"console",level:t,args:Array.from(a).map(function(x){return typeof x==="object"?JSON.stringify(x):String(x)})},"*");}catch(e){}}var oL=console.log,oW=console.warn,oE=console.error;console.log=function(){send("log",arguments);oL.apply(console,arguments);};console.warn=function(){send("warn",arguments);oW.apply(console,arguments);};console.error=function(){send("error",arguments);oE.apply(console,arguments);};window.onerror=function(m,u,l){send("error",[m+" (line "+l+")"]);};})();</script></head>
+</head>
 <body>
 <script>
   if ('serviceWorker' in navigator) {
@@ -816,21 +869,20 @@
   <div class="container" style="">
     
     <div class="top-bar" style="">
-      <button class="btn-icon" onclick="openBgModal()" title="Achtergrond, Accentkleur &amp; Back-up">
+      <button class="btn-icon" onclick="openBgModal()" title="Achtergrond, Accentkleur &amp; Back-up" aria-label="Instellingen openen">
         <i class="fa-solid fa-palette"></i>
       </button>
-      <a href="https://www.snapchat.com/add/excuus-expert" target="_blank" rel="noopener noreferrer" class="btn-icon snap-icon" title="Volg op Snapchat voor updates">
-        <i class="fa-brands fa-snapchat"></i>
-      </a>
-      <button class="btn-icon" id="themeBtn" onclick="toggleTheme()" title="Wissel Thema">
+      <button class="btn-icon" id="themeBtn" onclick="toggleTheme()" title="Wissel Thema" aria-label="Thema wisselen">
         <i class="fa-solid fa-moon"></i>
       </button>
     </div>
 
     <header class="header" style="">
-      <div class="clock-time" id="clockTime" style="">15:10:08</div>
-      <div class="clock-date" id="clockDate" style="">Dinsdag 8 september 2026</div>
-      <p class="greeting" id="greetingText" style="">Goedemiddag</p>
+      <div class="welcome-meta">
+        <span id="greetingText">Goedemiddag</span>
+        <span class="clock-time" id="clockTime">15:10</span>
+        <span class="clock-date" id="clockDate">Dinsdag 8 september 2026</span>
+      </div>
       <h1>Waar wil je meer over weten?</h1>
       <p class="subtitle" style="">Zoek het web door, of kies direct een bron.</p>
     </header>
@@ -855,12 +907,11 @@
         <option value="brave">Brave</option>
         <option value="maps">Google Maps</option>
       </select>
-      <input type="search" id="searchInput" class="search-input" placeholder="Zoek op het web..." autocomplete="off" autofocus="" aria-label="Zoekopdracht">
+      <input type="search" id="searchInput" class="search-input" placeholder="Zoek op het web of open een website..." autocomplete="off" aria-label="Zoekopdracht" aria-autocomplete="list" aria-controls="searchSuggestions" aria-expanded="false">
+      <div class="search-suggestions" id="searchSuggestions" role="listbox" aria-label="Zoeksuggesties" hidden></div>
       <span class="search-shortcut-badge" title="Druk op / om te zoeken">/</span>
       <button type="submit" class="search-btn" style=""><i class="fa-solid fa-magnifying-glass" style=""></i></button>
     </form>
-    <p class="search-note">Enter om te zoeken <span aria-hidden="true">·</span> je zoekopdrachten openen in een nieuw tabblad</p>
-
     <div class="widgets-grid" style="">
       <div class="widget-card" style="">
         <div class="widget-title">
@@ -892,7 +943,7 @@
       <div class="widget-card" style="">
         <div class="widget-title">
           <span><i class="fa-solid fa-clock-rotate-left"></i> Zoekgeschiedenis</span>
-          <button class="btn-icon-sm" onclick="clearAllHistory()" title="Alles wisselen">
+          <button class="btn-icon-sm" onclick="clearAllHistory()" title="Zoekgeschiedenis wissen" aria-label="Zoekgeschiedenis wissen">
             <i class="fa-solid fa-trash-can"></i>
           </button>
         </div>
@@ -910,7 +961,7 @@
     <div class="cards-grid" id="cardsGrid">
       <div class="card">
         <div class="pinned-badge"><i class="fa-solid fa-thumbtack"></i> Gepind</div>
-        <div class="card-icon-wrapper"><img src="jouw-logo.png" class="logo-img" alt="Logo"></div>
+        <div class="card-icon-wrapper"><i class="fa-solid fa-bolt" aria-hidden="true"></i></div>
         <h2 class="card-title">ExcuusExpert</h2>
         <p class="card-desc">Genereer bliksemsnel de beste excuses.</p>
         <a href="https://excuusexpert.github.io/excuusexpert/" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
@@ -918,7 +969,7 @@
 
       <div class="card">
         <div class="pinned-badge"><i class="fa-solid fa-thumbtack"></i> Gepind</div>
-        <div class="card-icon-wrapper"><img src="favicon.png" class="logo-img" alt="Logo"></div>
+        <div class="card-icon-wrapper"><i class="fa-solid fa-book-open" aria-hidden="true"></i></div>
         <h2 class="card-title">StudyTrack</h2>
         <p class="card-desc">Overzicht over huiswerk en toetsen.</p>
         <a href="https://excuusexpert.github.io/studytrack/" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
@@ -926,18 +977,12 @@
 
       <div class="card">
         <div class="pinned-badge"><i class="fa-solid fa-thumbtack"></i> Gepind</div>
-        <div class="card-icon-wrapper"><img src="gamepad.png" class="logo-img" alt="Logo"></div>
+        <div class="card-icon-wrapper"><i class="fa-solid fa-gamepad" aria-hidden="true"></i></div>
         <h2 class="card-title">Snake</h2>
         <p class="card-desc">Speel Snake als je je verveelt.</p>
         <a href="https://excuusexpert.github.io/snake/" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
       </div>
     </div>
-
-    <footer class="footer-snap">
-      <a href="https://www.snapchat.com/add/excuus-expert" target="_blank" rel="noopener noreferrer">
-        <i class="fa-brands fa-snapchat" style="color: #FFFC00; font-size: 16px;"></i> Volg mij op Snapchat voor de laatste updates
-      </a>
-    </footer>
 
   </div>
 
@@ -1035,10 +1080,40 @@
 
   <script>
     const DEFAULT_ACCENT_HEX = "#d94f32";
-    let customBookmarks = JSON.parse(localStorage.getItem('portal_bookmarks')) || [];
-    let todos = JSON.parse(localStorage.getItem('portal_todos')) || [];
-    let searchHistory = JSON.parse(localStorage.getItem('portal_search_history')) || [];
+    function readStoredArray(key) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key) || '[]');
+        return Array.isArray(value) ? value : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function safeHttpUrl(value) {
+      try {
+        const input = String(value || '').trim();
+        const url = new URL(/^https?:\/\//i.test(input) ? input : `https://${input}`);
+        return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password ? url.href : '';
+      } catch (error) {
+        return '';
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[character]);
+    }
+
+    function normalizeText(value) {
+      return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('nl');
+    }
+
+    let customBookmarks = readStoredArray('portal_bookmarks');
+    let todos = readStoredArray('portal_todos');
+    let searchHistory = readStoredArray('portal_search_history');
     let isLightTheme = localStorage.getItem('portal_theme') === 'light';
+    let activeSuggestionIndex = -1;
     let pendingDeleteIndex = null;
     let editingIndex = null;
     let draggedIndex = null;
@@ -1046,6 +1121,7 @@
     if (isLightTheme) {
       document.body.classList.add('light-theme');
       document.getElementById('themeBtn').innerHTML = '<i class="fa-solid fa-sun"></i>';
+      document.querySelector('meta[name="theme-color"]').content = '#f2f5f1';
     }
 
     /* Primary Accent Color apply */
@@ -1132,6 +1208,7 @@
       document.body.classList.toggle('light-theme', isLightTheme);
       localStorage.setItem('portal_theme', isLightTheme ? 'light' : 'dark');
       document.getElementById('themeBtn').innerHTML = isLightTheme ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+      document.querySelector('meta[name="theme-color"]').content = isLightTheme ? '#f2f5f1' : '#17201c';
     }
 
     function openBgModal() {
@@ -1200,16 +1277,21 @@
       closeBgModal();
     }
 
-    /* Keyboard Shortcut: '/' to focus search bar */
+    /* Search-first keyboard controls */
     document.addEventListener('keydown', (e) => {
-      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
+      if ((e.key === '/' && !isTyping) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) {
         e.preventDefault();
         document.getElementById('searchInput').focus();
       } else if (e.key === 'Escape') {
-        closeAddModal();
-        closeDeleteModal();
-        closeCityModal();
-        closeBgModal();
+        if (!document.getElementById('searchSuggestions').hidden) {
+          hideSearchSuggestions();
+        } else {
+          closeAddModal();
+          closeDeleteModal();
+          closeCityModal();
+          closeBgModal();
+        }
       }
     });
 
@@ -1219,6 +1301,7 @@
         bookmarks: customBookmarks,
         todos: todos,
         searchHistory: searchHistory,
+        searchEngine: localStorage.getItem('portal_search_engine') || 'google',
         bgType: localStorage.getItem('portal_bg_type') || 'default',
         bgVal: localStorage.getItem('portal_bg_val') || '',
         primaryColor: localStorage.getItem('portal_primary_color') || DEFAULT_ACCENT_HEX,
@@ -1248,6 +1331,7 @@
           if (data.bookmarks) localStorage.setItem('portal_bookmarks', JSON.stringify(data.bookmarks));
           if (data.todos) localStorage.setItem('portal_todos', JSON.stringify(data.todos));
           if (data.searchHistory) localStorage.setItem('portal_search_history', JSON.stringify(data.searchHistory));
+          if (data.searchEngine) localStorage.setItem('portal_search_engine', data.searchEngine);
           if (data.bgType) localStorage.setItem('portal_bg_type', data.bgType);
           if (data.bgVal) localStorage.setItem('portal_bg_val', data.bgVal);
           if (data.primaryColor) localStorage.setItem('portal_primary_color', data.primaryColor);
@@ -1289,67 +1373,213 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    function executeSearch(e) {
-      if (e) e.preventDefault();
-      const input = document.getElementById('searchInput');
-      const query = input.value.trim();
-      const engine = document.getElementById('searchEngine').value;
-      if (!query) return;
-
-      let searchUrl = '';
-      if (engine === 'google') searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-      else if (engine === 'ddg') searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-      else if (engine === 'youtube') searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
-      else if (engine === 'wikipedia') searchUrl = `https://nl.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`;
-      else if (engine === 'bing') searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
-      else if (engine === 'yahoo') searchUrl = `https://search.yahoo.com/search?p=${encodeURIComponent(query)}`;
-      else if (engine === 'images') searchUrl = `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(query)}`;
-      else if (engine === 'brave') searchUrl = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
-      else if (engine === 'maps') searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(query)}`;
-
-      window.open(searchUrl, '_blank', 'noopener,noreferrer');
-
-      addSearchHistory(query, engine);
-      input.value = '';
+    function setSelectedEngine(engine) {
+      const select = document.getElementById('searchEngine');
+      const optionExists = Array.from(select.options).some((option) => option.value === engine);
+      select.value = optionExists ? engine : 'google';
+      localStorage.setItem('portal_search_engine', select.value);
+      document.querySelectorAll('.engine-tab').forEach((tab) => {
+        tab.setAttribute('aria-pressed', String(tab.dataset.engine === select.value));
+      });
     }
+
+    const savedSearchEngine = localStorage.getItem('portal_search_engine');
+    if (savedSearchEngine) setSelectedEngine(savedSearchEngine);
 
     document.querySelectorAll('.engine-tab').forEach((tab) => {
       tab.addEventListener('click', () => {
-        document.getElementById('searchEngine').value = tab.dataset.engine;
-        document.querySelectorAll('.engine-tab').forEach((item) => {
-          item.setAttribute('aria-pressed', String(item === tab));
-        });
+        setSelectedEngine(tab.dataset.engine);
         document.getElementById('searchInput').focus();
       });
     });
 
-    function renderHistory() {
-      const list = document.getElementById('historyList');
-      list.innerHTML = '';
+    const searchInput = document.getElementById('searchInput');
+    const suggestionList = document.getElementById('searchSuggestions');
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      searchInput.focus({ preventScroll: true });
+    }
 
-      if (searchHistory.length === 0) {
-        list.innerHTML = '<li class="history-empty">Geen zoekopdrachten bewaard</li>';
+    function hideSearchSuggestions() {
+      suggestionList.hidden = true;
+      searchInput.setAttribute('aria-expanded', 'false');
+      searchInput.removeAttribute('aria-activedescendant');
+      activeSuggestionIndex = -1;
+    }
+
+    function getLocalSites() {
+      return Array.from(document.querySelectorAll('#cardsGrid .card')).map((card) => ({
+        title: card.querySelector('.card-title')?.textContent.trim() || '',
+        url: card.querySelector('.btn-visit')?.getAttribute('href') || '',
+        detail: card.querySelector('.card-desc')?.textContent.trim() || ''
+      })).filter((site) => site.title && safeHttpUrl(site.url));
+    }
+
+    function renderSearchSuggestions() {
+      const query = searchInput.value.trim();
+      const normalizedQuery = normalizeText(query);
+      const sites = getLocalSites();
+      const matches = [];
+
+      if (normalizedQuery) {
+        sites.filter((site) => normalizeText(`${site.title} ${site.url} ${site.detail}`).includes(normalizedQuery))
+          .slice(0, 4)
+          .forEach((site) => matches.push({ type: 'site', title: site.title, detail: site.detail || site.url, url: site.url }));
+
+        searchHistory.slice().reverse()
+          .filter((item) => item && typeof item.query === 'string' && normalizeText(item.query).includes(normalizedQuery))
+          .slice(0, 4)
+          .forEach((item) => matches.push({ type: 'search', title: item.query, detail: `Verder zoeken met ${item.engine === 'url' ? 'website' : item.engine}`, query: item.query, engine: item.engine }));
+      } else {
+        searchHistory.slice().reverse().slice(0, 4)
+          .filter((item) => item && typeof item.query === 'string')
+          .forEach((item) => matches.push({ type: 'search', title: item.query, detail: `Recent · ${item.engine === 'url' ? 'website' : item.engine}`, query: item.query, engine: item.engine }));
+        sites.slice(0, 4).forEach((site) => matches.push({ type: 'site', title: site.title, detail: site.detail || site.url, url: site.url }));
+      }
+
+      suggestionList.replaceChildren();
+      activeSuggestionIndex = -1;
+      matches.slice(0, 7).forEach((suggestion, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'search-suggestion';
+        button.id = `search-suggestion-${index}`;
+        button.setAttribute('role', 'option');
+        button.setAttribute('aria-selected', 'false');
+        button.innerHTML = `<span class="search-suggestion-icon"><i class="fa-solid ${suggestion.type === 'site' ? 'fa-arrow-up-right-from-square' : 'fa-clock-rotate-left'}" aria-hidden="true"></i></span><span class="search-suggestion-copy"><span class="search-suggestion-title"></span><span class="search-suggestion-detail"></span></span><span class="search-suggestion-type">${suggestion.type === 'site' ? 'Site' : 'Recent'}</span>`;
+        button.querySelector('.search-suggestion-title').textContent = suggestion.title;
+        button.querySelector('.search-suggestion-detail').textContent = suggestion.detail;
+        button.addEventListener('click', () => {
+          if (suggestion.type === 'site') {
+            window.open(safeHttpUrl(suggestion.url), '_blank', 'noopener,noreferrer');
+            searchInput.value = '';
+            hideSearchSuggestions();
+          } else {
+            searchInput.value = suggestion.query;
+            setSelectedEngine(suggestion.engine);
+            hideSearchSuggestions();
+            executeSearch();
+          }
+        });
+        suggestionList.appendChild(button);
+      });
+
+      suggestionList.hidden = matches.length === 0;
+      searchInput.setAttribute('aria-expanded', String(matches.length > 0));
+      searchInput.removeAttribute('aria-activedescendant');
+    }
+
+    searchInput.addEventListener('focus', renderSearchSuggestions);
+    searchInput.addEventListener('input', renderSearchSuggestions);
+    searchInput.addEventListener('keydown', (event) => {
+      const options = Array.from(suggestionList.querySelectorAll('.search-suggestion'));
+      if (!options.length) return;
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        const direction = event.key === 'ArrowDown' ? 1 : -1;
+        activeSuggestionIndex = (activeSuggestionIndex + direction + options.length) % options.length;
+        options.forEach((option, index) => option.setAttribute('aria-selected', String(index === activeSuggestionIndex)));
+        searchInput.setAttribute('aria-activedescendant', options[activeSuggestionIndex].id);
+        options[activeSuggestionIndex].scrollIntoView({ block: 'nearest' });
+      } else if (event.key === 'Enter' && activeSuggestionIndex >= 0) {
+        event.preventDefault();
+        options[activeSuggestionIndex].click();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('.search-box')) hideSearchSuggestions();
+    });
+
+    function getDirectUrl(query) {
+      const candidate = /^(https?:\/\/|www\.)/i.test(query) || /^(localhost|(?:[\w-]+\.)+[a-z]{2,})(?::\d+)?(?:[/?#]\S*)?$/i.test(query);
+      return candidate ? safeHttpUrl(query) : '';
+    }
+
+    function executeSearch(event) {
+      if (event) event.preventDefault();
+      const input = document.getElementById('searchInput');
+      const typedQuery = input.value.trim();
+      if (!typedQuery) return;
+
+      const directUrl = getDirectUrl(typedQuery);
+      if (directUrl) {
+        window.open(directUrl, '_blank', 'noopener,noreferrer');
+        addSearchHistory(typedQuery, 'url');
+        input.value = '';
+        hideSearchSuggestions();
         return;
       }
 
-      searchHistory.slice().reverse().forEach((item, realIndex) => {
-        const originalIndex = searchHistory.length - 1 - realIndex;
+      const shortcuts = { g: 'google', google: 'google', ddg: 'ddg', duck: 'ddg', yt: 'youtube', youtube: 'youtube', w: 'wikipedia', wiki: 'wikipedia', img: 'images', maps: 'maps' };
+      const shortcutMatch = typedQuery.match(/^!(g|google|ddg|duck|yt|youtube|w|wiki|img|maps)\s+(.+)$/i);
+      const query = shortcutMatch ? shortcutMatch[2].trim() : typedQuery;
+      const engine = shortcutMatch ? shortcuts[shortcutMatch[1].toLowerCase()] : document.getElementById('searchEngine').value;
+      if (!query) return;
+      if (shortcutMatch) setSelectedEngine(engine);
+
+      const searchUrls = {
+        google: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+        ddg: `https://duckduckgo.com/?q=${encodeURIComponent(query)}`,
+        youtube: `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`,
+        wikipedia: `https://nl.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`,
+        bing: `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
+        yahoo: `https://search.yahoo.com/search?p=${encodeURIComponent(query)}`,
+        images: `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(query)}`,
+        brave: `https://search.brave.com/search?q=${encodeURIComponent(query)}`,
+        maps: `https://www.google.com/maps/search/${encodeURIComponent(query)}`
+      };
+      window.open(searchUrls[engine] || searchUrls.google, '_blank', 'noopener,noreferrer');
+      addSearchHistory(query, engine);
+      input.value = '';
+      hideSearchSuggestions();
+    }
+
+    function renderHistory() {
+      const list = document.getElementById('historyList');
+      list.replaceChildren();
+
+      if (searchHistory.length === 0) {
+        const empty = document.createElement('li');
+        empty.className = 'history-empty';
+        empty.textContent = 'Je zoekopdrachten verschijnen hier';
+        list.appendChild(empty);
+        return;
+      }
+
+      searchHistory.slice().reverse().forEach((item) => {
+        if (!item || typeof item.query !== 'string') return;
+        const originalIndex = searchHistory.indexOf(item);
         const li = document.createElement('li');
         li.className = 'history-item';
         li.id = `history-item-${originalIndex}`;
-        li.innerHTML = `
-          <a class="history-text" onclick="reSearch('${item.query.replace(/'/g, "\\'")}', '${item.engine}')" title="Opnieuw zoeken">
-            ${item.query} <span class="history-tag">${item.engine}</span>
-          </a>
-          <div class="history-actions">
-            <button class="history-btn" onclick="deleteHistoryItem(${originalIndex})" title="Verwijderen"><i class="fa-solid fa-trash"></i></button>
-          </div>
-        `;
+        const replay = document.createElement('button');
+        replay.type = 'button';
+        replay.className = 'history-text';
+        replay.title = 'Opnieuw zoeken';
+        replay.textContent = item.query;
+        const tag = document.createElement('span');
+        tag.className = 'history-tag';
+        tag.textContent = item.engine === 'url' ? 'Website' : String(item.engine || 'web');
+        replay.appendChild(tag);
+        replay.addEventListener('click', () => reSearch(item.query, item.engine));
+
+        const actions = document.createElement('div');
+        actions.className = 'history-actions';
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'history-btn';
+        remove.title = 'Verwijder zoekopdracht';
+        remove.setAttribute('aria-label', `Verwijder ${item.query} uit de zoekgeschiedenis`);
+        remove.innerHTML = '<i class="fa-solid fa-trash" aria-hidden="true"></i>';
+        remove.addEventListener('click', () => deleteHistoryItem(originalIndex));
+        actions.appendChild(remove);
+        li.append(replay, actions);
         list.appendChild(li);
       });
     }
 
     function addSearchHistory(query, engine) {
+      searchHistory = searchHistory.filter((item) => !(item.query === query && item.engine === engine));
       searchHistory.push({ query, engine });
       if (searchHistory.length > 20) searchHistory.shift();
       localStorage.setItem('portal_search_history', JSON.stringify(searchHistory));
@@ -1358,7 +1588,7 @@
 
     function reSearch(query, engine) {
       document.getElementById('searchInput').value = query;
-      document.getElementById('searchEngine').value = engine;
+      setSelectedEngine(engine);
       executeSearch();
     }
 
@@ -1393,11 +1623,6 @@
 
       if (savedLat && savedLon) {
         getWeather(savedLat, savedLon, savedName);
-      } else if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          pos => getWeather(pos.coords.latitude, pos.coords.longitude),
-          () => getWeather(52.3676, 4.9041, "Amsterdam")
-        );
       } else {
         getWeather(52.3676, 4.9041, "Amsterdam");
       }
@@ -1461,10 +1686,13 @@
 
     function renderTodos() {
       const list = document.getElementById('todoList');
-      list.innerHTML = '';
+      list.replaceChildren();
 
       if (todos.length === 0) {
-        list.innerHTML = '<li class="todo-empty">Geen taken voor vandaag 🎉</li>';
+        const empty = document.createElement('li');
+        empty.className = 'todo-empty';
+        empty.textContent = 'Nog geen taken';
+        list.appendChild(empty);
         return;
       }
 
@@ -1472,13 +1700,26 @@
         const li = document.createElement('li');
         li.className = `todo-item ${todo.done ? 'done' : ''}`;
         li.id = `todo-item-${idx}`;
-        li.innerHTML = `
-          <span>${todo.text}</span>
-          <div class="todo-actions">
-            <button class="todo-btn" onclick="toggleTodo(${idx})"><i class="fa-solid fa-check"></i></button>
-            <button class="todo-btn" onclick="deleteTodo(${idx})"><i class="fa-solid fa-trash"></i></button>
-          </div>
-        `;
+        const text = document.createElement('span');
+        text.textContent = String(todo.text || '');
+        const actions = document.createElement('div');
+        actions.className = 'todo-actions';
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'todo-btn';
+        toggle.title = todo.done ? 'Markeer als open' : 'Markeer als afgerond';
+        toggle.setAttribute('aria-label', toggle.title);
+        toggle.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i>';
+        toggle.addEventListener('click', () => toggleTodo(idx));
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'todo-btn';
+        remove.title = 'Taak verwijderen';
+        remove.setAttribute('aria-label', `Verwijder taak ${String(todo.text || '')}`);
+        remove.innerHTML = '<i class="fa-solid fa-trash" aria-hidden="true"></i>';
+        remove.addEventListener('click', () => deleteTodo(idx));
+        actions.append(toggle, remove);
+        li.append(text, actions);
         list.appendChild(li);
       });
     }
@@ -1518,20 +1759,14 @@
 
     function getDomain(urlStr) {
       try {
-        let formattedUrl = urlStr.startsWith('http://') || urlStr.startsWith('https://') ? urlStr : 'https://' + urlStr;
-        const parsed = new URL(formattedUrl);
-        return parsed.hostname;
+        return new URL(safeHttpUrl(urlStr)).hostname;
       } catch (e) {
-        return urlStr;
+        return String(urlStr || '');
       }
     }
 
     function formatUrl(urlStr) {
-      let formatted = urlStr.trim();
-      if (!formatted.startsWith('http://') && !formatted.startsWith('https://')) {
-        formatted = 'https://' + formatted;
-      }
-      return formatted.replace(/\/$/, "");
+      return safeHttpUrl(urlStr).replace(/\/$/, '');
     }
 
     /* Touch Drag & Drop support variables */
@@ -1543,17 +1778,19 @@
       document.querySelectorAll('.custom-card').forEach(el => el.remove());
 
       customBookmarks.forEach((bm, index) => {
+        if (!bm || typeof bm !== 'object') return;
         const domain = getDomain(bm.url);
+        const bookmarkUrl = safeHttpUrl(bm.url);
+        const title = String(bm.title || 'Snelkoppeling');
         let iconHtml = '';
 
-        if (bm.iconType === 'url' && bm.iconVal) {
-          iconHtml = `<img src="${bm.iconVal}" class="logo-img" alt="${bm.title}">`;
+        if (bm.iconType === 'url' && safeHttpUrl(bm.iconVal)) {
+          iconHtml = `<img src="${escapeHtml(safeHttpUrl(bm.iconVal))}" class="logo-img" alt="">`;
         } else if (bm.iconType === 'fa' && bm.iconVal) {
-          iconHtml = `<i class="fa-solid ${bm.iconVal}"></i>`;
+          const iconClasses = String(bm.iconVal).split(/\s+/).filter((name) => /^fa-[a-z0-9-]+$/i.test(name)).join(' ');
+          iconHtml = `<i class="fa-solid ${escapeHtml(iconClasses || 'fa-link')}" aria-hidden="true"></i>`;
         } else {
-          const primaryIcon = `https://icon.horse/icon/${domain}`;
-          const fallbackIcon = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
-          iconHtml = `<img src="${primaryIcon}" class="logo-img" alt="${bm.title}" onerror="this.onerror=null; this.src='${fallbackIcon}';">`;
+          iconHtml = `<span class="bookmark-monogram" aria-hidden="true">${escapeHtml(title.slice(0, 1).toLocaleUpperCase('nl'))}</span>`;
         }
 
         const card = document.createElement('div');
@@ -1566,9 +1803,9 @@
           <button class="btn-edit" onclick="openEditModal(${index})" title="Bewerken"><i class="fa-solid fa-pen"></i></button>
           <button class="btn-delete" onclick="askDelete(${index})" title="Verwijderen"><i class="fa-solid fa-xmark"></i></button>
           <div class="card-icon-wrapper">${iconHtml}</div>
-          <h2 class="card-title">${bm.title}</h2>
-          <p class="card-desc">Snelkoppeling naar ${domain}</p>
-          <a href="${bm.url}" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          <h2 class="card-title">${escapeHtml(title)}</h2>
+          <p class="card-desc">${escapeHtml(domain || 'Persoonlijke website')}</p>
+          <a href="${escapeHtml(bookmarkUrl || '#')}" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
         `;
 
         /* Desktop HTML5 Drag & Drop */
@@ -1652,6 +1889,7 @@
       document.getElementById('iconType').value = 'auto';
       document.getElementById('iconVal').value = '';
       toggleIconTypeInput();
+      document.getElementById('errorMessage').textContent = 'Deze link staat al op je dashboard!';
       document.getElementById('errorMessage').style.display = 'none';
       document.getElementById('addModal').style.display = 'flex'; 
     }
@@ -1665,6 +1903,7 @@
       document.getElementById('iconType').value = bm.iconType || 'auto';
       document.getElementById('iconVal').value = bm.iconVal || '';
       toggleIconTypeInput();
+      document.getElementById('errorMessage').textContent = 'Deze link staat al op je dashboard!';
       document.getElementById('errorMessage').style.display = 'none';
       document.getElementById('addModal').style.display = 'flex';
     }
@@ -1681,12 +1920,24 @@
       if (!title || !url) return alert('Vul zowel een naam als een URL in.');
 
       url = formatUrl(url);
+      if (!url) {
+        errorEl.textContent = 'Gebruik een geldige website met een http(s)-adres.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      if (iconType === 'url' && iconVal && !safeHttpUrl(iconVal)) {
+        errorEl.textContent = 'Gebruik een geldige http(s)-link voor de afbeelding.';
+        errorEl.style.display = 'block';
+        return;
+      }
 
       const isDuplicate = customBookmarks.some((bm, idx) => 
         idx !== editingIndex && formatUrl(bm.url).toLowerCase() === url.toLowerCase()
       );
 
       if (isDuplicate) {
+        errorEl.textContent = 'Deze link staat al op je dashboard!';
         errorEl.style.display = 'block';
         return;
       }
