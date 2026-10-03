@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="nl" style="--primary: #d94f32; --primary-gradient: linear-gradient(135deg, #e46643 0%, #c83f2b 100%);"><head>
+<html lang="nl" style="--primary: #6c63ff; --primary-gradient: linear-gradient(135deg, #6c63ff 0%, #4f46e5 100%);"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Een snelle, persoonlijke browserstartpagina met zoeken, favoriete websites en handige widgets.">
   <title>ExcuusExpert Start</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#17201c">
+  <meta name="theme-color" content="#07090e">
   <meta name="google-site-verification" content="6CH9S9xC1Fp_FROwEj38SJQM01kB6wiO9QQFOhzRPNw">
 
   <link rel="icon" type="image/svg+xml" href="icon.svg">
@@ -650,42 +650,41 @@
     }
 
     :root {
-      --bg-dark: #f2f5f1;
-      --card-bg: #ffffff;
-      --border-color: #dce3dd;
-      --border-hover: #e65a3b;
-      --primary: #d94f32;
-      --primary-gradient: linear-gradient(135deg, #e46643, #c83f2b);
-      --text-main: #1d2924;
-      --text-muted: #68756e;
-      --input-bg: #f7f9f6;
+      --bg-dark: #f1f5f9;
+      --card-bg: rgba(255, 255, 255, 0.68);
+      --border-color: rgba(15, 23, 42, 0.1);
+      --border-hover: rgba(108, 99, 255, 0.55);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --input-bg: rgba(255, 255, 255, 0.48);
+      --glass-shadow: 0 12px 34px rgba(34, 40, 70, 0.08);
     }
 
     body.light-theme {
-      --bg-dark: #f2f5f1;
-      --card-bg: #ffffff;
-      --border-color: #dce3dd;
-      --border-hover: #e65a3b;
-      --text-main: #1d2924;
-      --text-muted: #68756e;
-      --input-bg: #f7f9f6;
+      --bg-dark: #f1f5f9;
+      --card-bg: rgba(255, 255, 255, 0.68);
+      --border-color: rgba(15, 23, 42, 0.1);
+      --border-hover: rgba(108, 99, 255, 0.55);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --input-bg: rgba(255, 255, 255, 0.48);
+      --glass-shadow: 0 12px 34px rgba(34, 40, 70, 0.08);
     }
 
     body:not(.light-theme) {
-      --bg-dark: #17201c;
-      --card-bg: #202b26;
-      --border-color: #35433b;
-      --border-hover: #f07a58;
-      --primary: #f07a58;
-      --primary-gradient: linear-gradient(135deg, #f07a58, #cf4933);
-      --text-main: #edf2ed;
-      --text-muted: #a1aea5;
-      --input-bg: #18221d;
+      --bg-dark: #07090e;
+      --card-bg: rgba(16, 18, 30, 0.68);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --border-hover: rgba(108, 99, 255, 0.62);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --input-bg: rgba(0, 0, 0, 0.3);
+      --glass-shadow: 0 12px 34px rgba(0, 0, 0, 0.24);
     }
 
     body {
       padding: 24px clamp(16px, 5vw, 64px) 36px;
-      background-image: radial-gradient(#a7b2aa 0.65px, transparent 0.65px);
+      background-image: radial-gradient(rgba(108, 99, 255, 0.16) 0.65px, transparent 0.65px);
       background-size: 18px 18px;
     }
 
@@ -732,19 +731,25 @@
       background: var(--card-bg);
       border-color: var(--border-color);
       box-shadow: 0 2px 5px rgba(20, 35, 25, 0.06);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
     .search-engine-select { display: none; }
     .search-box {
       max-width: 760px;
+      width: min(100%, 760px);
+      margin-inline: auto;
       min-height: 64px;
       padding: 8px 10px 8px 20px;
       gap: 12px;
       border: 1px solid var(--border-color);
       border-radius: 10px;
       background: var(--card-bg);
-      box-shadow: 0 10px 32px rgba(26, 42, 32, 0.09);
+      box-shadow: 0 16px 46px rgba(5, 5, 18, 0.22);
+      backdrop-filter: blur(22px) saturate(155%);
+      -webkit-backdrop-filter: blur(22px) saturate(155%);
     }
-    .search-box:focus-within { border-color: var(--primary); box-shadow: 0 10px 32px rgba(26, 42, 32, 0.09), 0 0 0 3px color-mix(in srgb, var(--primary) 16%, transparent); }
+    .search-box:focus-within { border-color: var(--primary); box-shadow: 0 16px 46px rgba(5, 5, 18, 0.22), 0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent); }
     .search-input { font-size: 16px; }
     .search-btn { width: 46px; height: 46px; border-radius: 8px; font-size: 16px; }
     .search-shortcut-badge { border-radius: 5px; }
@@ -765,6 +770,8 @@
       border-radius: 10px;
       background: var(--card-bg);
       box-shadow: 0 18px 44px rgba(10, 24, 15, 0.2);
+      backdrop-filter: blur(22px) saturate(155%);
+      -webkit-backdrop-filter: blur(22px) saturate(155%);
     }
     .search-suggestion {
       display: flex;
@@ -806,8 +813,9 @@
       border: 1px solid var(--border-color);
       border-radius: 8px;
       background: var(--card-bg);
-      box-shadow: 0 4px 14px rgba(26, 42, 32, 0.04);
-      backdrop-filter: none;
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: blur(18px) saturate(145%);
+      -webkit-backdrop-filter: blur(18px) saturate(145%);
     }
     .widget-card { padding: 18px; gap: 14px; }
     .widget-title { color: var(--text-main); }
@@ -821,8 +829,8 @@
     .btn-add { border-radius: 7px; }
     .cards-grid { gap: 12px; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
     .card { padding: 20px; }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 9px 20px rgba(26, 42, 32, 0.1); }
-    .card-icon-wrapper { border-radius: 8px; background: var(--input-bg); }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(108, 99, 255, 0.18); }
+    .card-icon-wrapper { border: 1px solid var(--border-color); border-radius: 8px; background: var(--input-bg); }
     .btn-visit { border-radius: 6px; }
     .footer-snap { margin-top: 4px; }
     .footer-snap a { border-radius: 7px; }
@@ -1079,7 +1087,7 @@
   </div>
 
   <script>
-    const DEFAULT_ACCENT_HEX = "#d94f32";
+    const DEFAULT_ACCENT_HEX = "#6c63ff";
     function readStoredArray(key) {
       try {
         const value = JSON.parse(localStorage.getItem(key) || '[]');
@@ -1121,14 +1129,14 @@
     if (isLightTheme) {
       document.body.classList.add('light-theme');
       document.getElementById('themeBtn').innerHTML = '<i class="fa-solid fa-sun"></i>';
-      document.querySelector('meta[name="theme-color"]').content = '#f2f5f1';
+      document.querySelector('meta[name="theme-color"]').content = '#f1f5f9';
     }
 
     /* Primary Accent Color apply */
     function applyPrimaryColor(color) {
       if (!color || !/^#[0-9A-F]{6}$/i.test(color)) return;
       document.documentElement.style.setProperty('--primary', color);
-      document.documentElement.style.setProperty('--primary-gradient', `linear-gradient(135deg, ${color} 0%, color-mix(in srgb, ${color} 78%, #18211e) 100%)`);
+      document.documentElement.style.setProperty('--primary-gradient', `linear-gradient(135deg, ${color} 0%, #4f46e5 100%)`);
     }
 
     function setAccentColor(hexValue) {
@@ -1208,7 +1216,7 @@
       document.body.classList.toggle('light-theme', isLightTheme);
       localStorage.setItem('portal_theme', isLightTheme ? 'light' : 'dark');
       document.getElementById('themeBtn').innerHTML = isLightTheme ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
-      document.querySelector('meta[name="theme-color"]').content = isLightTheme ? '#f2f5f1' : '#17201c';
+      document.querySelector('meta[name="theme-color"]').content = isLightTheme ? '#f1f5f9' : '#07090e';
     }
 
     function openBgModal() {

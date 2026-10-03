@@ -4,8 +4,8 @@
   "description": "Zoek op het web, in afbeeldingen, video's, kaarten en Wikipedia.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#17201c",
-  "theme_color": "#17201c",
+  "background_color": "#07090e",
+  "theme_color": "#6c63ff",
   "orientation": "portrait-primary",
   "icons": [
     {
