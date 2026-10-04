@@ -39,3 +39,7 @@ Firefox gebruikt voor nieuwe tabbladen een aparte instelling. Gebruik een compat
 - De pagina vraagt niet om je locatie. Het weer gebruikt Amsterdam totdat je zelf een stad instelt.
 - Er is geen analytics-script ingebouwd. Weer en geocodering gebruiken Open-Meteo wanneer die functies worden geladen of ingesteld.
 - Gebruik **Instellingen > Data Back-up** om gegevens te exporteren of op een ander apparaat te importeren.
+
+## Waarom ik dit gemaakt heb?
+Ik heb het excuusexpert platform gemaakt in mijn lange tussenuur van vandaag. Ik heb niks te doen. Al mijn huiswerk is al af. 
+Dan doe ik dit maar. 
