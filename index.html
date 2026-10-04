@@ -5,10 +5,10 @@
   <meta name="description" content="Een snelle, persoonlijke browserstartpagina met zoeken, favoriete websites en handige widgets.">
   <title>ExcuusExpert Start</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#07090e">
+  <meta name="theme-color" content="#f1f5f9">
   <meta name="google-site-verification" content="6CH9S9xC1Fp_FROwEj38SJQM01kB6wiO9QQFOhzRPNw">
 
-  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="icon" type="image/png" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
@@ -866,7 +866,7 @@
     }
   </style>
 </head>
-<body>
+<body class="light-theme">
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -881,18 +881,15 @@
         <i class="fa-solid fa-palette"></i>
       </button>
       <button class="btn-icon" id="themeBtn" onclick="toggleTheme()" title="Wissel Thema" aria-label="Thema wisselen">
-        <i class="fa-solid fa-moon"></i>
+        <i class="fa-solid fa-sun"></i>
       </button>
     </div>
 
     <header class="header" style="">
-      <div class="welcome-meta">
-        <span id="greetingText">Goedemiddag</span>
-        <span class="clock-time" id="clockTime">15:10</span>
-        <span class="clock-date" id="clockDate">Dinsdag 8 september 2026</span>
-      </div>
-      <h1>Waar wil je meer over weten?</h1>
-      <p class="subtitle" style="">Zoek het web door, of kies direct een bron.</p>
+      <div class="clock-time" id="clockTime">15:10:08</div>
+      <div class="clock-date" id="clockDate">Zaterdag 3 oktober 2026</div>
+      <h1 class="greeting" id="greetingText">Goedemorgen</h1>
+      <p class="subtitle">Al je favoriete apps, widgets en snelkoppelingen op één plek</p>
     </header>
 
     <div class="engine-tabs" role="group" aria-label="Kies waar je wilt zoeken">
@@ -969,7 +966,7 @@
     <div class="cards-grid" id="cardsGrid">
       <div class="card">
         <div class="pinned-badge"><i class="fa-solid fa-thumbtack"></i> Gepind</div>
-        <div class="card-icon-wrapper"><i class="fa-solid fa-bolt" aria-hidden="true"></i></div>
+        <div class="card-icon-wrapper"><img src="jouw-logo.png" class="logo-img" alt="ExcuusExpert logo"></div>
         <h2 class="card-title">ExcuusExpert</h2>
         <p class="card-desc">Genereer bliksemsnel de beste excuses.</p>
         <a href="https://excuusexpert.github.io/excuusexpert/" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
@@ -977,7 +974,7 @@
 
       <div class="card">
         <div class="pinned-badge"><i class="fa-solid fa-thumbtack"></i> Gepind</div>
-        <div class="card-icon-wrapper"><i class="fa-solid fa-book-open" aria-hidden="true"></i></div>
+        <div class="card-icon-wrapper"><img src="favicon.png" class="logo-img" alt="StudyTrack logo"></div>
         <h2 class="card-title">StudyTrack</h2>
         <p class="card-desc">Overzicht over huiswerk en toetsen.</p>
         <a href="https://excuusexpert.github.io/studytrack/" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
@@ -985,7 +982,7 @@
 
       <div class="card">
         <div class="pinned-badge"><i class="fa-solid fa-thumbtack"></i> Gepind</div>
-        <div class="card-icon-wrapper"><i class="fa-solid fa-gamepad" aria-hidden="true"></i></div>
+        <div class="card-icon-wrapper"><img src="gamepad.png" class="logo-img" alt="Snake logo"></div>
         <h2 class="card-title">Snake</h2>
         <p class="card-desc">Speel Snake als je je verveelt.</p>
         <a href="https://excuusexpert.github.io/snake/" target="_blank" rel="noopener noreferrer" class="btn-visit">Openen <i class="fa-solid fa-arrow-right"></i></a>
@@ -1120,11 +1117,16 @@
     let customBookmarks = readStoredArray('portal_bookmarks');
     let todos = readStoredArray('portal_todos');
     let searchHistory = readStoredArray('portal_search_history');
-    let isLightTheme = localStorage.getItem('portal_theme') === 'light';
+    const savedTheme = localStorage.getItem('portal_theme');
+    let isLightTheme = savedTheme ? savedTheme === 'light' : true;
     let activeSuggestionIndex = -1;
     let pendingDeleteIndex = null;
     let editingIndex = null;
     let draggedIndex = null;
+
+    if (!savedTheme) {
+      localStorage.setItem('portal_theme', 'light');
+    }
 
     if (isLightTheme) {
       document.body.classList.add('light-theme');
@@ -1214,6 +1216,7 @@
     function toggleTheme() {
       isLightTheme = !isLightTheme;
       document.body.classList.toggle('light-theme', isLightTheme);
+      document.body.classList.toggle('dark-theme', !isLightTheme);
       localStorage.setItem('portal_theme', isLightTheme ? 'light' : 'dark');
       document.getElementById('themeBtn').innerHTML = isLightTheme ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
       document.querySelector('meta[name="theme-color"]').content = isLightTheme ? '#f1f5f9' : '#07090e';
