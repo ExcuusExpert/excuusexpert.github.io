@@ -71,7 +71,7 @@
         <option value="Proefwerk niet geleerd">Proefwerk niet geleerd</option>
         <option value="Boek vergeten">Boek vergeten</option>
         <option value="Te weinig tijd gehad">Te weinig tijd gehad</option>
-        <option value="custom">Ander onderwerp...</option>
+        <option value="custom">Ander onderwerp... (AI, 5x per dag gratis)</option>
       </select>
     </div>
 
@@ -143,13 +143,9 @@
         <label for="profileName">Naam</label>
         <input class="profile-input" id="profileName" type="text" maxlength="40" autocomplete="name" placeholder="Bijvoorbeeld: Alex" required>
 
-        <label for="profileGroqApiKey">Jouw Groq API-sleutel</label>
-        <div class="api-key-input-wrap">
-          <input class="profile-input" id="profileGroqApiKey" type="password" autocomplete="off" spellcheck="false" placeholder="gsk_...">
-          <button class="key-visibility-btn" id="toggleApiKeyVisibility" type="button" aria-label="Toon API-sleutel">Toon</button>
-        </div>
-        <a class="profile-key-link" href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">API-sleutel aanmaken bij GroqCloud <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
-        <p class="profile-security-note">Naam, sleutel en geschiedenis worden alleen in deze browser opgeslagen. De sleutel is niet versleuteld; gebruik dit niet op een gedeeld apparaat.</p>
+        <label for="profilePremiumCode">Premiumcode (optioneel)</label>
+        <input class="profile-input" id="profilePremiumCode" type="text" autocomplete="off" spellcheck="false" placeholder="Bijvoorbeeld: KLAS-4D9Q">
+        <p class="profile-security-note">Gratis kun je 5 eigen smoezen per dag maken. Met een premiumcode kun je er veel meer maken. Naam, code en geschiedenis worden alleen in deze browser opgeslagen.</p>
         <p class="profile-status" id="profileStatus" role="status" aria-live="polite"></p>
         <div class="profile-actions">
           <button class="generate-button" type="submit">Profiel opslaan</button>
