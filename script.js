@@ -735,8 +735,7 @@ const profileAvatarBtn = document.getElementById("profileAvatarBtn");
 const profileAvatarInitials = document.getElementById("profileAvatarInitials");
 const profileForm = document.getElementById("profileForm");
 const profileNameInput = document.getElementById("profileName");
-const profileGroqApiKeyInput = document.getElementById("profileGroqApiKey");
-const toggleApiKeyVisibility = document.getElementById("toggleApiKeyVisibility");
+const profilePremiumCodeInput = document.getElementById("profilePremiumCode");
 const profileStatus = document.getElementById("profileStatus");
 const historyList = document.getElementById("historyList");
 const historyEmpty = document.getElementById("historyEmpty");
@@ -761,15 +760,17 @@ function writeLocalData(key, value) {
   }
 }
 
-let localProfile = readLocalData(profileStorageKey, { name: "", apiKey: "" });
+let localProfile = readLocalData(profileStorageKey, { name: "", premiumCode: "" });
 if (!localProfile || typeof localProfile !== "object") {
-  localProfile = { name: "", apiKey: "" };
+  localProfile = { name: "", premiumCode: "" };
 }
 localProfile.name = typeof localProfile.name === "string" ? localProfile.name : "";
-localProfile.apiKey = typeof localProfile.apiKey === "string" ? localProfile.apiKey : "";
+localProfile = {
+  name: localProfile.name,
+  premiumCode: typeof localProfile.premiumCode === "string" ? localProfile.premiumCode : ""
+};
+writeLocalData(profileStorageKey, localProfile); // wist oude eigen API-sleutels uit de browser
 
-const previousTabKey = sessionStorage.getItem("excuusExpertGroqApiKey");
-if (!localProfile.apiKey && previousTabKey) localProfile.apiKey = previousTabKey;
 
 let excuseHistory = readLocalData(historyStorageKey, []);
 if (!Array.isArray(excuseHistory)) excuseHistory = [];
@@ -782,7 +783,7 @@ function updateProfileView() {
     localProfile.name ? `Profiel van ${localProfile.name} openen` : "Lokaal profiel aanmaken"
   );
   profileNameInput.value = localProfile.name;
-  profileGroqApiKeyInput.value = localProfile.apiKey;
+  profilePremiumCodeInput.value = localProfile.premiumCode;
 }
 
 function openProfileModal() {
@@ -806,37 +807,26 @@ profileForm.addEventListener("submit", (event) => {
   event.preventDefault();
   localProfile = {
     name: profileNameInput.value.trim(),
-    apiKey: cleanApiKey(profileGroqApiKeyInput.value)
+    premiumCode: profilePremiumCodeInput.value.trim().toUpperCase()
   };
 
   if (writeLocalData(profileStorageKey, localProfile)) {
     sessionStorage.removeItem("excuusExpertGroqApiKey");
     updateProfileView();
-    profileStatus.textContent = localProfile.apiKey && !localProfile.apiKey.startsWith("gsk_")
-      ? "Opgeslagen, maar let op: Groq-sleutels beginnen normaal met gsk_."
-      : "Profiel opgeslagen op dit apparaat.";
+    profileStatus.textContent = "Profiel opgeslagen op dit apparaat.";
   } else {
     profileStatus.textContent = "Opslaan is niet gelukt. Controleer de opslaginstellingen van je browser.";
   }
 });
 
 document.getElementById("clearProfileBtn").addEventListener("click", () => {
-  if (!window.confirm("Profiel en API-sleutel van dit apparaat verwijderen? Je geschiedenis blijft bewaard.")) return;
-  localProfile = { name: "", apiKey: "" };
+  if (!window.confirm("Profiel en premiumcode van dit apparaat verwijderen? Je geschiedenis blijft bewaard.")) return;
+  localProfile = { name: "", premiumCode: "" };
   localStorage.removeItem(profileStorageKey);
   sessionStorage.removeItem("excuusExpertGroqApiKey");
   updateProfileView();
   profileStatus.textContent = "Profiel verwijderd. Je geschiedenis is bewaard.";
 });
-
-if (profileGroqApiKeyInput && toggleApiKeyVisibility) {
-  toggleApiKeyVisibility.addEventListener("click", () => {
-    const showApiKey = profileGroqApiKeyInput.type === "password";
-    profileGroqApiKeyInput.type = showApiKey ? "text" : "password";
-    toggleApiKeyVisibility.textContent = showApiKey ? "Verberg" : "Toon";
-    toggleApiKeyVisibility.setAttribute("aria-label", showApiKey ? "Verberg API-sleutel" : "Toon API-sleutel");
-  });
-}
 
 function renderExcuseHistory() {
   historyList.replaceChildren();
@@ -909,92 +899,39 @@ if (slider && waarde) {
 }
 
 /* -----------------------------
-   GROQ HULPFUNCTIES
+   EIGEN SMOES VIA ONZE API (Cloudflare Worker)
 ----------------------------- */
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const GROQ_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b"];
+// Vul hier de URL van jouw Worker in nadat je hem hebt aangemaakt:
+const EXCUSE_API_URL = "https://excuusexpert-api.hagedoornhessel.workers.dev";
 
-// Haalt spaties, enters en aanhalingstekens weg die vaak mee-gekopieerd worden
-function cleanApiKey(raw) {
-  return String(raw || "").replace(/[\s"'\u201C\u201D\u2018\u2019]/g, "");
-}
-
-function groqError(message) {
+function apiError(message) {
   const error = new Error(message);
-  error.isGroq = true;
+  error.isApiError = true;
   return error;
 }
 
-async function requestGroq(apiKey, model, topic, strictness, useReasoningParams) {
-  const body = {
-    model,
-    temperature: 0.8,
-    // gpt-oss is een "denkend" model: de denk-tokens tellen mee, dus ruim budget geven
-    max_completion_tokens: 1500,
-    messages: [
-      {
-        role: "system",
-        content: "Je schrijft in het Nederlands een korte, natuurlijke en tactvolle uitleg aan een docent. Maak de formulering passend bij een strengheidsniveau van 1 (los) tot 10 (formeel). Verzin geen concrete gebeurtenissen, ziekte, familieproblemen of andere feiten die de gebruiker niet heeft genoemd. Neem verantwoordelijkheid waar dat past en stel eventueel een haalbare herstelactie voor. Antwoord uitsluitend met de formulering, zonder aanhalingstekens of toelichting."
-      },
-      {
-        role: "user",
-        content: `Onderwerp: ${topic}\nStrengheid docent: ${strictness}/10. Schrijf een korte formulering die ik kan aanpassen aan wat er echt is gebeurd.`
-      }
-    ]
-  };
-
-  if (useReasoningParams) {
-    body.reasoning_effort = "low";
-    body.include_reasoning = false;
+async function generateExcuse(topic, strictness) {
+  if (EXCUSE_API_URL.includes("JOUW-NAAM")) {
+    throw apiError("De smoes-server is nog niet ingesteld. Vul EXCUSE_API_URL in script.js in.");
   }
 
-  const response = await fetch(GROQ_URL, {
+  const response = await fetch(EXCUSE_API_URL, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body)
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ topic, strictness, premiumCode: localProfile.premiumCode })
   });
   const data = await response.json().catch(() => ({}));
-  return { response, data };
-}
 
-async function generateWithGroq(apiKey, topic, strictness) {
-  let lastError = null;
-
-  for (const model of GROQ_MODELS) {
-    // Eerst met reasoning-opties, daarna zonder (voor het geval een model die niet kent)
-    for (const useReasoningParams of [true, false]) {
-      const { response, data } = await requestGroq(apiKey, model, topic, strictness, useReasoningParams);
-
-      if (response.ok) {
-        const text = data.choices?.[0]?.message?.content;
-        if (typeof text === "string" && text.trim()) {
-          return text.trim().replace(/^["\u201C\u201D]+|["\u201C\u201D]+$/g, "");
-        }
-        lastError = groqError("Groq gaf geen bruikbare tekst terug. Probeer het opnieuw.");
-        break; // volgende model proberen
-      }
-
-      if (response.status === 401 || response.status === 403) {
-        throw groqError("Groq heeft deze sleutel niet geaccepteerd. Controleer je API-sleutel in je profiel.");
-      }
-      if (response.status === 429) {
-        throw groqError("De Groq-limiet is bereikt. Probeer het over een minuutje opnieuw.");
-      }
-
-      const apiMessage = typeof data.error?.message === "string"
-        ? data.error.message.replace(/[\r\n\t]+/g, " ").slice(0, 180)
-        : "Geen verdere foutdetails ontvangen.";
-      lastError = groqError(`Groq-fout (${response.status}): ${apiMessage}`);
-
-      if (response.status === 400 && useReasoningParams) continue; // opnieuw zonder reasoning-opties
-      break; // volgende model proberen
-    }
+  if (response.status === 429 && data.error === "limit") {
+    throw apiError(data.premium
+      ? "Je dagelijkse premium-limiet is bereikt. Probeer het morgen opnieuw."
+      : `Je hebt vandaag je ${data.limit} gratis eigen smoezen gebruikt. Wil je er meer? Voeg een premiumcode toe in je profiel (vraag er een via Snapchat).`);
   }
-
-  throw lastError || groqError("Groq gaf geen bruikbare tekst terug. Probeer het opnieuw.");
+  if (response.status === 503) throw apiError("Het is nu erg druk. Probeer het later opnieuw.");
+  if (!response.ok || typeof data.excuse !== "string") {
+    throw apiError("Er ging iets mis bij het maken van je smoes. Probeer het opnieuw.");
+  }
+  return data;
 }
 
 /* -----------------------------
@@ -1007,18 +944,10 @@ if (knop) {
     const selectedTopic = probleemSelect.value;
     const topic = selectedTopic === "custom" ? customTopicInput.value.trim() : selectedTopic;
     const strictness = Number(slider.value);
-    const apiKey = cleanApiKey(localProfile.apiKey);
 
     if (!topic) {
       generatorStatus.textContent = "Vul eerst een onderwerp in.";
       customTopicInput.focus();
-      return;
-    }
-
-    if (selectedTopic === "custom" && !apiKey) {
-      generatorStatus.textContent = "Voeg een Groq API-sleutel toe aan je profiel voor een zelfgekozen onderwerp.";
-      openProfileModal();
-      profileStatus.textContent = "Voeg je Groq API-sleutel toe en sla je profiel op.";
       return;
     }
 
@@ -1043,16 +972,18 @@ if (knop) {
     generatorStatus.textContent = "Een smoes op maat wordt gemaakt...";
 
     try {
-      const generated = await generateWithGroq(apiKey, topic, strictness);
-      resultaatTekst.textContent = generated;
+      const data = await generateExcuse(topic, strictness);
+      resultaatTekst.textContent = data.excuse;
       resultaat.style.display = "block";
-      addExcuseToHistory(topic, generated);
-      generatorStatus.textContent = "";
+      addExcuseToHistory(topic, data.excuse);
+      generatorStatus.textContent = data.codeInvalid
+        ? "Deze premiumcode is niet geldig, dus de gratis limiet is gebruikt."
+        : `Nog ${data.remaining} van ${data.limit} eigen smoezen vandaag${data.premium ? " (premium)" : ""}.`;
     } catch (error) {
-      console.error("Groq-aanvraag mislukt:", error);
-      generatorStatus.textContent = error.isGroq
+      console.error("Smoes-aanvraag mislukt:", error);
+      generatorStatus.textContent = error.isApiError
         ? error.message
-        : "Verbinding met Groq mislukt. Controleer je internet en je API-sleutel (alleen letters/cijfers, begint met gsk_).";
+        : "Verbinding mislukt. Controleer je internet en probeer het opnieuw.";
     } finally {
       knop.disabled = false;
       knop.textContent = "✨ Genereer mijn smoes";
