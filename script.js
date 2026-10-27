@@ -1,3 +1,13 @@
+// Ruim oude Service Workers van de verwijderde zoekpagina op
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for (let registration of registrations) {
+      registration.unregister();
+      console.log('Oude zoekpagina Service Worker succesvol verwijderd!');
+    }
+  });
+}
+
 /* -----------------------------
    HAMBURGER MENU LOGICA
 ----------------------------- */
