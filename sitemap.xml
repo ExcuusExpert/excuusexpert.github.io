@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://sitemaps.org">
   <url>
-    <loc>https://excuusexpert.github.io/excuusexpert/</loc>
+    <loc>https://excuusexpert.github.io/</loc>
     <lastmod>2026-10-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <changefreq>dayly</changefreq>
+    <priority>1.1</priority>
   </url>
 </urlset>
