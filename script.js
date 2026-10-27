@@ -53,7 +53,7 @@ const database = {
       "Mijn excuses, het verkeer zat vanochtend flink tegen.",
       "Sorry dat ik te laat ben, de brug ging open vlak toen ik eraankwam.",
       "Excuus, mijn wekker is helaas niet afgegaan vanochtend.",
-      "Sorry, ik moest nog enen wachten op de aansluitende bus.",
+      "Sorry, ik moest nog even wachten op de aansluitende bus.",
       "Mijn excuses, ik kon mijn fietssleutel niet vinden toen ik weg wilde.",
       "Sorry dat ik te laat ben, het was erg druk bij de trap en gangen.",
       "Excuus voor de vertraging, mijn fietsketting liep eraf onderweg.",
@@ -86,7 +86,7 @@ const database = {
       "Mijn excuses voor mijn te late komst. Ik had wat opstartproblemen deze ochtend.",
       "Excuus voor de vertraging. Ik moest onderweg een alternatieve route nemen.",
       "Mijn excuses dat ik te laat ben. Ik zal me snel installeren zodat ik mee kan doen.",
-      "Sorry dat ik te laat binnenstap. Mijn spullen stonden noch niet klaar vanochtend.",
+      "Sorry dat ik te laat binnenstap. Mijn spullen stonden nog niet klaar vanochtend.",
       "Mijn excuses, het inhalen van de vertraging onderweg is helaas niet helemaal gelukt.",
       "Excuus voor de vertraging. De verkeersomstandigheden waren vanmorgen minder gunstig.",
       "Mijn excuses dat ik te laat ben. Ik had de tijdsduur van mijn reis onderschat.",
@@ -129,7 +129,7 @@ const database = {
     ],
     "9-10": [
       "Mijn excuses dat ik te laat ben. Ik had mijn tijd vanochtend niet goed ingeschat en daardoor ben ik later aangekomen. Ik begrijp dat dit mijn verantwoordelijkheid is.",
-      "Uiterst excuses voor mijn verlate binnenkomst. Ik begrijp dat stiptheid belangrijk is en ik neem de volledige verantwoording voor dit verzuim.",
+      "Uiterste excuses voor mijn verlate binnenkomst. Ik begrijp dat stiptheid belangrijk is en ik neem de volledige verantwoording voor dit verzuim.",
       "Het spijt me oprecht dat ik te laat ben. Ik had de mogelijke obstakels onderweg moeten incalculeren en accepteer de consequenties hiervan.",
       "Mijn oprechte excuses voor het verstoren van de les. Ik ben tekortgeschoten in mijn planning en zal hier lering uit trekken.",
       "Excuus voor het laattijdig verschijnen. Het is mijn eigen verantwoordelijkheid om op tijd te zijn en ik heb hierin gefaald vanochtend.",
@@ -266,7 +266,7 @@ const database = {
     ],
     "9-10": [
       "Mijn excuses. Ik heb mijn huiswerk gemaakt, maar ben vergeten het mee te nemen. Ik had mijn tas beter moeten controleren voordat ik naar school ging. Ik begrijp dat dit mijn verantwoordelijkheid is.",
-      "Uiterst excuses voor het niet bij me hebben van het huiswerk. Ik begrijp dat dit mijn eigen verzuim is en accepteer de consequenties hiervan.",
+      "Uiterste excuses voor het niet bij me hebben van het huiswerk. Ik begrijp dat dit mijn eigen verzuim is en accepteer de consequenties hiervan.",
       "Het spijt me oprecht dat ik de uitgewerkte opdrachten niet kan overleggen. Ik neem de volledige verantwoording voor deze onzorgvuldigheid.",
       "Mijn oprechte excuses voor het ontbreken van het huiswerk. Ik had mijn spullen gisteravond tijdig moeten ordenen en begrijp dat dit niet professioneel is.",
       "Excuus dat ik mijn huiswerk niet bij me heb. Ik respecteer uw lessen en de vereiste voorbereiding, en betreur het dat ik hierin ben tekortgeschoten.",
@@ -417,7 +417,7 @@ const database = {
       "Mijn oprechte excuses. Ik had de omvang van de stof en de benodigde tijd zorgvuldiger moeten inschatten en plannen.",
       "Het spijt me dat ik de toetsstof onvoldoende beheers. Ik erken dat dit het directe gevolg is van mijn eigen keuzes gisteravond.",
       "Mijn excuses voor de ontstane situatie. Ik snap dat u inzet en voorbereiding verwacht en ik betreur het dat ik hierin faal.",
-      "Excuus voor mijn nalatigheid betreft het leerschema van deze toets. Ik neem dit voorval uiterst serieus en herstel dit voor de toekomst.",
+      "Excuus voor mijn nalatigheid betreffende het leerschema van deze toets. Ik neem dit voorval uiterst serieus en herstel dit voor de toekomst.",
       "Mijn oprechte excuses voor mijn gebrekkige kennis van de stof. Ik aanvaard dat de oorzaak hiervan volledig bij mijzelf ligt.",
       "Het spijt me dat ik niet aan de voorbereidingseisen van dit proefwerk heb voldaan. Ik zal de gemiste stof zelfstandig inhalen.",
       "Mijn excuses voor het niet nakomen van mijn studievoorziening. Ik begrijp dat verantwoordelijkheid bij mij begint en zal hier lering uit trekken.",
@@ -540,7 +540,7 @@ const database = {
     ],
     "9-10": [
       "Mijn excuses. Ik ben mijn boek vergeten mee te nemen. Ik had mijn tas beter moeten controleren en begrijp dat dit mijn verantwoordelijkheid is.",
-      "Uiterst excuses voor het niet bij me hebben van het vereiste lesboek. Ik begrijp dat dit mijn eigen verzuim is en accepteer de consequenties.",
+      "Uiterste excuses voor het niet bij me hebben van het vereiste lesboek. Ik begrijp dat dit mijn eigen verzuim is en accepteer de consequenties.",
       "Het spijt me oprecht dat ik mijn lesmateriaal niet compleet heb. Ik neem de volledige verantwoording voor deze onzorgvuldigheid.",
       "Mijn oprechte excuses voor het ontbreken van mijn boek. Ik had mijn spullen gisteravond tijdig moeten controleren en begrijp dat dit onprofessioneel is.",
       "Excuus dat ik het boek niet in mijn bezit heb. Ik respecteer de lesregels omtrent benodigdheden en betreur het dat ik hierin faal.",
@@ -561,7 +561,7 @@ const database = {
       "Excuus dat het boek niet in mijn bezit is tijdens de les. Ik zal de stof uit het boek thuis zelfstandig en extra grondig doornemen.",
       "Het spijt me dat ik onzorgvuldig ben omgegaan met mijn spullen voor deze les. Ik accepteer de eventuele sancties hiervoor.",
       "Mijn oprechte excuses voor de nalatigheid vanmorgen. Ik zorg dat mijn schooltas vanaf heden elke dag strak gecontroleerd wordt.",
-      "Excuus dat ik het benodigde boek niet kan overleggen. Ik neem dit voorval uiterst serieus en herstel dit per omschakeling naar de volgende les.",
+      "Excuus dat ik het benodigde boek niet kan overleggen. Ik neem dit voorval uiterst serieus en herstel dit vóór de volgende les.",
       "Het spijt me ten zeerste dat ik mijn verplichting niet ben nagekomen. Ik begrijp dat dit mijn eigen schuld is en betreur de situatie.",
       "Mijn excuses voor het ontbreken van mijn lesboek. Ik zal het lokaal niet verder verstoren en de les stilletjes voltooien."
     ]
@@ -677,7 +677,7 @@ const database = {
     ],
     "9-10": [
       "Mijn excuses. Ik heb de benodigde tijd verkeerd ingeschat en daardoor niet alles op tijd kunnen afronden. Ik begrijp dat dit mijn verantwoordelijkheid is.",
-      "Uiterst excuses voor het niet volledig opleveren van deze opdracht. Ik accepteer de volledige verantwoording voor het mislukken van mijn tijdsplanning.",
+      "Uiterste excuses voor het niet volledig opleveren van deze opdracht. Ik accepteer de volledige verantwoording voor het mislukken van mijn tijdsplanning.",
       "Het spijt me oprecht dat het werk incompleet is. Ik had een gedegen tijdsanalyse moeten maken en begrijp dat dit mijn eigen tekortkoming is.",
       "Mijn oprechte excuses voor het niet tijdig voltooien van de taken. Ik begrijp dat plannen en opleveren mijn eigen plicht is en aanvaard de gevolgen.",
       "Excuus voor het onvolledige resultaat. Ik heb de werkdruk gisteravond verkeerd ingeschat en neem daar de volledige schuld voor op mij.",
@@ -806,13 +806,15 @@ profileForm.addEventListener("submit", (event) => {
   event.preventDefault();
   localProfile = {
     name: profileNameInput.value.trim(),
-    apiKey: profileGroqApiKeyInput.value.trim()
+    apiKey: cleanApiKey(profileGroqApiKeyInput.value)
   };
 
   if (writeLocalData(profileStorageKey, localProfile)) {
     sessionStorage.removeItem("excuusExpertGroqApiKey");
     updateProfileView();
-    profileStatus.textContent = "Profiel opgeslagen op dit apparaat.";
+    profileStatus.textContent = localProfile.apiKey && !localProfile.apiKey.startsWith("gsk_")
+      ? "Opgeslagen, maar let op: Groq-sleutels beginnen normaal met gsk_."
+      : "Profiel opgeslagen op dit apparaat.";
   } else {
     profileStatus.textContent = "Opslaan is niet gelukt. Controleer de opslaginstellingen van je browser.";
   }
@@ -907,6 +909,95 @@ if (slider && waarde) {
 }
 
 /* -----------------------------
+   GROQ HULPFUNCTIES
+----------------------------- */
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b"];
+
+// Haalt spaties, enters en aanhalingstekens weg die vaak mee-gekopieerd worden
+function cleanApiKey(raw) {
+  return String(raw || "").replace(/[\s"'\u201C\u201D\u2018\u2019]/g, "");
+}
+
+function groqError(message) {
+  const error = new Error(message);
+  error.isGroq = true;
+  return error;
+}
+
+async function requestGroq(apiKey, model, topic, strictness, useReasoningParams) {
+  const body = {
+    model,
+    temperature: 0.8,
+    // gpt-oss is een "denkend" model: de denk-tokens tellen mee, dus ruim budget geven
+    max_completion_tokens: 1500,
+    messages: [
+      {
+        role: "system",
+        content: "Je schrijft in het Nederlands een korte, natuurlijke en tactvolle uitleg aan een docent. Maak de formulering passend bij een strengheidsniveau van 1 (los) tot 10 (formeel). Verzin geen concrete gebeurtenissen, ziekte, familieproblemen of andere feiten die de gebruiker niet heeft genoemd. Neem verantwoordelijkheid waar dat past en stel eventueel een haalbare herstelactie voor. Antwoord uitsluitend met de formulering, zonder aanhalingstekens of toelichting."
+      },
+      {
+        role: "user",
+        content: `Onderwerp: ${topic}\nStrengheid docent: ${strictness}/10. Schrijf een korte formulering die ik kan aanpassen aan wat er echt is gebeurd.`
+      }
+    ]
+  };
+
+  if (useReasoningParams) {
+    body.reasoning_effort = "low";
+    body.include_reasoning = false;
+  }
+
+  const response = await fetch(GROQ_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+  const data = await response.json().catch(() => ({}));
+  return { response, data };
+}
+
+async function generateWithGroq(apiKey, topic, strictness) {
+  let lastError = null;
+
+  for (const model of GROQ_MODELS) {
+    // Eerst met reasoning-opties, daarna zonder (voor het geval een model die niet kent)
+    for (const useReasoningParams of [true, false]) {
+      const { response, data } = await requestGroq(apiKey, model, topic, strictness, useReasoningParams);
+
+      if (response.ok) {
+        const text = data.choices?.[0]?.message?.content;
+        if (typeof text === "string" && text.trim()) {
+          return text.trim().replace(/^["\u201C\u201D]+|["\u201C\u201D]+$/g, "");
+        }
+        lastError = groqError("Groq gaf geen bruikbare tekst terug. Probeer het opnieuw.");
+        break; // volgende model proberen
+      }
+
+      if (response.status === 401 || response.status === 403) {
+        throw groqError("Groq heeft deze sleutel niet geaccepteerd. Controleer je API-sleutel in je profiel.");
+      }
+      if (response.status === 429) {
+        throw groqError("De Groq-limiet is bereikt. Probeer het over een minuutje opnieuw.");
+      }
+
+      const apiMessage = typeof data.error?.message === "string"
+        ? data.error.message.replace(/[\r\n\t]+/g, " ").slice(0, 180)
+        : "Geen verdere foutdetails ontvangen.";
+      lastError = groqError(`Groq-fout (${response.status}): ${apiMessage}`);
+
+      if (response.status === 400 && useReasoningParams) continue; // opnieuw zonder reasoning-opties
+      break; // volgende model proberen
+    }
+  }
+
+  throw lastError || groqError("Groq gaf geen bruikbare tekst terug. Probeer het opnieuw.");
+}
+
+/* -----------------------------
    SMOES GENEREREN & COOLDOWN
 ----------------------------- */
 let vorigeIndex = -1;
@@ -916,7 +1007,7 @@ if (knop) {
     const selectedTopic = probleemSelect.value;
     const topic = selectedTopic === "custom" ? customTopicInput.value.trim() : selectedTopic;
     const strictness = Number(slider.value);
-    const apiKey = localProfile.apiKey.trim();
+    const apiKey = cleanApiKey(localProfile.apiKey);
 
     if (!topic) {
       generatorStatus.textContent = "Vul eerst een onderwerp in.";
@@ -952,56 +1043,16 @@ if (knop) {
     generatorStatus.textContent = "Een smoes op maat wordt gemaakt...";
 
     try {
-      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "openai/gpt-oss-20b",
-          temperature: 0.8,
-          max_tokens: 180,
-          messages: [
-            {
-              role: "system",
-              content: "Je schrijft in het Nederlands een korte, natuurlijke en tactvolle uitleg aan een docent. Maak de formulering passend bij een strengheidsniveau van 1 (los) tot 10 (formeel). Verzin geen concrete gebeurtenissen, ziekte, familieproblemen of andere feiten die de gebruiker niet heeft genoemd. Neem verantwoordelijkheid waar dat past en stel eventueel een haalbare herstelactie voor. Antwoord uitsluitend met de formulering, zonder aanhalingstekens of toelichting."
-            },
-            {
-              role: "user",
-              content: `Onderwerp: ${topic}\nStrengheid docent: ${strictness}/10. Schrijf een korte formulering die ik kan aanpassen aan wat er echt is gebeurd.`
-            }
-          ]
-        })
-      });
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error("Groq heeft deze sleutel niet geaccepteerd. Controleer je API-sleutel.");
-        }
-        if (response.status === 429) {
-          throw new Error("De Groq-limiet is bereikt. Probeer het later opnieuw.");
-        }
-        const apiError = typeof data.error?.message === "string"
-          ? data.error.message.replace(/[\r\n\t]+/g, " ").slice(0, 180)
-          : "Geen verdere foutdetails ontvangen.";
-        throw new Error(`Groq-fout (${response.status}): ${apiError}`);
-      }
-
-      const generated = data.choices?.[0]?.message?.content;
-      if (typeof generated !== "string" || !generated.trim()) {
-        throw new Error("Groq gaf geen bruikbare tekst terug. Probeer het opnieuw.");
-      }
-
-      resultaatTekst.textContent = generated.trim();
+      const generated = await generateWithGroq(apiKey, topic, strictness);
+      resultaatTekst.textContent = generated;
       resultaat.style.display = "block";
-      addExcuseToHistory(topic, generated.trim());
+      addExcuseToHistory(topic, generated);
       generatorStatus.textContent = "";
     } catch (error) {
-      generatorStatus.textContent = error.message.includes("Groq")
+      console.error("Groq-aanvraag mislukt:", error);
+      generatorStatus.textContent = error.isGroq
         ? error.message
-        : "Verbinding met Groq mislukt. Controleer je internet en probeer het opnieuw.";
+        : "Verbinding met Groq mislukt. Controleer je internet en je API-sleutel (alleen letters/cijfers, begint met gsk_).";
     } finally {
       knop.disabled = false;
       knop.textContent = "✨ Genereer mijn smoes";
