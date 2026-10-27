@@ -208,8 +208,20 @@
     <p>V6.7</p>
   </footer>
 
+  <!-- DIT STUKJE CODE HIER TUSSEN PLAKKEN -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let registration of registrations) {
+          registration.unregister().then(function() {
+            window.location.reload(true);
+          });
+        }
+      });
+    }
+  </script>
+
   <!-- Verander telkens het nummer achter ?v= als je een update doet -->
   <script src="script.js?v=6.7"></script>
 </body>
 </html>
-
