@@ -4,6 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- 1. Dwing de browser om géén oude versie op te slaan (Geen Cache) -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <!-- 2. Verwijder direct eventuele oude Service Workers van de zoekmachine -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script>
+
   <title>ExcuusExpert 🤫 De 100+ Beste Schoolsmoesjes (Die Écht Werken)</title>
 
   <!-- Google SEO & Favicon -->
@@ -18,7 +34,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script data-goatcounter="https://excuusexpert.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
-  <link rel="stylesheet" href="style.css">
+  <!-- 3. Cache Busting op je CSS (voeg ?v=2.0 toe) -->
+  <link rel="stylesheet" href="style.css?v=2.0">
 </head>
 
 <body>
@@ -222,6 +239,6 @@
   </script>
 
   <!-- Verander telkens het nummer achter ?v= als je een update doet -->
-  <script src="script.js?v=6.7"></script>
+  <script src="script.js?v=2.0"></script>
 </body>
 </html>
