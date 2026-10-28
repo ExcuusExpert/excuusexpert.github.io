@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://excuusexpert.github.io/sitemap.xml

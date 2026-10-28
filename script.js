@@ -14,13 +14,57 @@ if ('serviceWorker' in navigator) {
 function toggleMenu() {
   const navMenu = document.getElementById("navMenu");
   const hamburgerIcon = document.getElementById("hamburgerIcon");
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
   if (navMenu) {
     navMenu.classList.toggle("active");
-    if (navMenu.classList.contains("active")) {
-      hamburgerIcon.className = "fa-solid fa-xmark";
-    } else {
-      hamburgerIcon.className = "fa-solid fa-bars";
+    const isOpen = navMenu.classList.contains("active");
+    if (hamburgerIcon) hamburgerIcon.className = isOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+    if (hamburgerBtn) hamburgerBtn.setAttribute("aria-expanded", String(isOpen));
+  }
+}
+
+// Menu sluiten als je ergens anders klikt
+document.addEventListener("click", (event) => {
+  const navMenu = document.getElementById("navMenu");
+  if (!navMenu || !navMenu.classList.contains("active")) return;
+  if (navMenu.contains(event.target)) return;
+  if (event.target.closest && event.target.closest("#hamburgerBtn")) return;
+  toggleMenu();
+});
+
+// Escape sluit het menu en alle popups
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  const navMenu = document.getElementById("navMenu");
+  if (navMenu && navMenu.classList.contains("active")) toggleMenu();
+  ["submitModal", "profileModal"].forEach((id) => {
+    const modal = document.getElementById(id);
+    if (modal && modal.style.display && modal.style.display !== "none") modal.style.display = "none";
+  });
+});
+
+// Kopieert tekst; werkt ook als de moderne klembord-API niet beschikbaar is
+async function copyText(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
     }
+  } catch (error) {
+    console.warn("Klembord-API mislukt, fallback wordt gebruikt:", error);
+  }
+  try {
+    const helper = document.createElement("textarea");
+    helper.value = text;
+    helper.setAttribute("readonly", "");
+    helper.style.cssText = "position:fixed;top:-1000px;opacity:0;";
+    document.body.appendChild(helper);
+    helper.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(helper);
+    return ok;
+  } catch (error) {
+    return false;
   }
 }
 
@@ -1005,7 +1049,7 @@ if (knop) {
    SMOES KOPIËREN
 ----------------------------- */
 if (copyBtn) {
-  copyBtn.addEventListener("click", () => {
+  copyBtn.addEventListener("click", async () => {
     const smoesTekst = resultaatTekst ? resultaatTekst.textContent : "";
     
     if (!smoesTekst) {
@@ -1017,9 +1061,9 @@ if (copyBtn) {
       return;
     }
 
-    navigator.clipboard.writeText(smoesTekst);
+    const gelukt = await copyText(smoesTekst);
     const origineleTekst = copyBtn.textContent;
-    copyBtn.textContent = "✅ Gekopieerd!";
+    copyBtn.textContent = gelukt ? "✅ Gekopieerd!" : "⚠️ Kopiëren mislukt";
     setTimeout(() => {
       copyBtn.textContent = origineleTekst;
     }, 2000);
@@ -1053,48 +1097,14 @@ if (shareBtn) {
         console.log("Delen geannuleerd");
       }
     } else {
-      navigator.clipboard.writeText(smoesTekst);
+      const gelukt = await copyText(smoesTekst);
       const origineleShareTekst = shareBtn.textContent;
-      shareBtn.textContent = "✅ Gekopieerd!";
+      shareBtn.textContent = gelukt ? "✅ Gekopieerd!" : "⚠️ Kopiëren mislukt";
       setTimeout(() => {
         shareBtn.textContent = origineleShareTekst;
       }, 2000);
     }
   });
-}
-
-/* ================================
-   PANIEKKNOP LOGICA
-================================= */
-const panicExcuses = [
-  "Mijn fietssleutel is vanochtend afgebroken in het slot, ik moest rennend naar school.",
-  "Magister lag er gisteravond compleet uit, ik kon mijn huiswerk nergens inzien.",
-  "Mijn wekker is niet afgegaan door een automatische software-update van mijn telefoon.",
-  "De ketting van mijn fiets vloog eronderweg af en kwam helemaal vast te zitten tussen de kettingkast.",
-  "Ik had de verkeerde stapel boeken meegenomen omdat het rooster in de app niet goed vernieuwd was."
-];
-
-function generatePanicExcuse() {
-  const randomExcuse = panicExcuses[Math.floor(Math.random() * panicExcuses.length)];
-  document.getElementById('panicText').innerText = randomExcuse;
-  document.getElementById('panicModal').style.display = 'flex';
-  addExcuseToHistory("Spoedexcuus", randomExcuse);
-}
-
-function closePanicModal(event) {
-  if (event.target.id === 'panicModal') {
-    document.getElementById('panicModal').style.display = 'none';
-  }
-}
-
-function closePanicModalDirect() {
-  document.getElementById('panicModal').style.display = 'none';
-}
-
-function copyPanicExcuse() {
-  const text = document.getElementById('panicText').innerText;
-  navigator.clipboard.writeText(text);
-  alert('Spoedexcuus gekopieerd!');
 }
 
 /* ================================
@@ -1114,12 +1124,35 @@ function closeSubmitModal(event) {
   }
 }
 
-function handleFormSubmit(event) {
-  setTimeout(() => {
-    alert("Bedankt! Je smoes is succesvol ingestuurd.");
-    closeSubmitModalDirect();
-    document.getElementById('excuseForm').reset();
-  }, 500);
+async function handleFormSubmit(event) {
+  event.preventDefault(); // voorkomt dat je naar de Formspree-pagina wordt gestuurd
+  const form = document.getElementById('excuseForm');
+  const status = document.getElementById('submitStatus');
+  const button = document.getElementById('submitBtn');
+  const original = button ? button.textContent : "";
+
+  if (button) { button.disabled = true; button.textContent = "Versturen..."; }
+  if (status) status.textContent = "";
+
+  try {
+    const response = await fetch(form.action, {
+      method: "POST",
+      headers: { "Accept": "application/json" },
+      body: new FormData(form)
+    });
+    if (!response.ok) throw new Error("Formspree status " + response.status);
+    form.reset();
+    if (status) status.textContent = "Bedankt! Je smoes is ingestuurd. 🎉";
+    setTimeout(() => {
+      closeSubmitModalDirect();
+      if (status) status.textContent = "";
+    }, 1800);
+  } catch (error) {
+    console.error("Insturen mislukt:", error);
+    if (status) status.textContent = "Versturen mislukt. Probeer het later opnieuw.";
+  } finally {
+    if (button) { button.disabled = false; button.textContent = original; }
+  }
 }
 /* -----------------------------
    LICHT / DONKER MODUS LOGICA

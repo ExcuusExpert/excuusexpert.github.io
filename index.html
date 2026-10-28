@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <!-- FORCEER DIRECT EEN NIEUWE URL VOOR ALLE GEBRUIKERS (Omzeilt mobiele cache) -->
-  <script>
-    if (!window.location.search.includes('v=2')) {
-      window.location.href = window.location.pathname + '?v=2';
-    }
-  </script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -27,12 +20,64 @@
     }
   </script>
 
-  <title>ExcuusExpert 🤫 De 100+ Beste Schoolsmoesjes (Die Écht Werken)</title>
+  <title>Smoesgenerator voor school: gratis smoesjes | ExcuusExpert</title>
 
-  <!-- Google SEO & Favicon -->
-  <meta name="description" content="Te laat gekomen of je huiswerk vergeten? 😱 Geen paniek! Vind op ExcuusExpert direct de meest geloofwaardige en waterdichte smoesjes voor school.">
-  <link rel="icon" type="image/png" href="jouw-logo.png">
+  <!-- Google SEO -->
+  <meta name="description" content="Te laat of huiswerk vergeten? Genereer in één klik een geloofwaardige smoes voor school, afgestemd op hoe streng je docent is. Gratis en direct klaar.">
+  <meta name="keywords" content="smoesje school, smoes te laat, excuus huiswerk vergeten, smoesgenerator, schoolsmoesjes, excuus generator">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#08090e">
+  <link rel="canonical" href="https://excuusexpert.github.io/">
   <meta name="google-site-verification" content="6CH9S9xC1Fp_FROwEj38SJQM01kB6wiO9QQFOhzRPNw" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Delen op social media (WhatsApp, Snapchat, Discord, X) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:site_name" content="ExcuusExpert">
+  <meta property="og:title" content="ExcuusExpert: de slimste smoesgenerator voor school">
+  <meta property="og:description" content="Te laat of huiswerk vergeten? Krijg direct een geloofwaardige smoes, aangepast aan de strengheid van je docent.">
+  <meta property="og:url" content="https://excuusexpert.github.io/">
+  <meta property="og:image" content="https://excuusexpert.github.io/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="ExcuusExpert, de slimste smoesgenerator voor school">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ExcuusExpert: de slimste smoesgenerator voor school">
+  <meta name="twitter:description" content="Te laat of huiswerk vergeten? Krijg direct een geloofwaardige smoes.">
+  <meta name="twitter:image" content="https://excuusexpert.github.io/og-image.png">
+
+  <!-- Gestructureerde data voor Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://excuusexpert.github.io/#website",
+        "url": "https://excuusexpert.github.io/",
+        "name": "ExcuusExpert",
+        "inLanguage": "nl-NL"
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://excuusexpert.github.io/#app",
+        "name": "ExcuusExpert Smoesgenerator",
+        "url": "https://excuusexpert.github.io/",
+        "description": "Gratis smoesgenerator voor school met smoesjes voor te laat komen, huiswerk vergeten, proefwerk niet geleerd en meer.",
+        "applicationCategory": "EntertainmentApplication",
+        "operatingSystem": "Alle apparaten met een browser",
+        "inLanguage": "nl-NL",
+        "isPartOf": { "@id": "https://excuusexpert.github.io/#website" },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+      }
+    ]
+  }
+  </script>
 
   <!-- Modern Lettertype & FontAwesome Iconen -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,7 +87,7 @@
   <script data-goatcounter="https://excuusexpert.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
   <!-- 3. Cache Busting op je CSS (voeg ?v=2.0 toe) -->
-  <link rel="stylesheet" href="style.css?v=2.0">
+  <link rel="stylesheet" href="style.css?v=2.2">
 </head>
 
 <body>
@@ -52,7 +97,7 @@
     <div class="nav-brand">Excuus<span>Expert</span></div>
 
     <div class="nav-actions">
-      <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Thema wisselen">
+      <button class="theme-toggle-btn" id="themeToggleBtn" type="button" onclick="toggleTheme()" aria-label="Thema wisselen">
         <i class="fa-solid fa-sun" id="themeIcon"></i>
       </button>
 
@@ -60,32 +105,25 @@
         <span id="profileAvatarInitials">?</span>
       </button>
 
-      <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Menu">
+      <button class="hamburger-btn" id="hamburgerBtn" type="button" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="navMenu">
         <i class="fa-solid fa-bars" id="hamburgerIcon"></i>
       </button>
     </div>
 
-    <nav class="nav-menu" id="navMenu">
+    <nav class="nav-menu" id="navMenu" aria-label="Hoofdmenu">
       <ul>
         <li><a href="https://excuusexpert.github.io" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> Home</a></li>
-        <li><a href="https://excuusexpert.github.io/studytrack" target="_blank" onclick="toggleMenu()"><i class="fa-solid fa-calendar-check"></i> StudyTrack - Huiswerk & Toets Planner</a></li>
-        <li><a href="#" onclick="toggleMenu(); openSubmitModal();"><i class="fa-solid fa-paper-plane"></i> Smoes Insturen</a></li>
-        <li><a href="https://snapchat.com/add/Excuus-Expert" target="_blank" onclick="toggleMenu()"><i class="fa-brands fa-snapchat"></i> Snapchat</a></li>
+        <li><a href="https://excuusexpert.github.io/studytrack" target="_blank" rel="noopener" onclick="toggleMenu()"><i class="fa-solid fa-calendar-check"></i> StudyTrack - Huiswerk & Toets Planner</a></li>
+        <li><a href="#" onclick="toggleMenu(); openSubmitModal(); return false;"><i class="fa-solid fa-paper-plane"></i> Smoes insturen</a></li>
+        <li><a href="https://snapchat.com/add/Excuus-Expert" target="_blank" rel="noopener noreferrer" onclick="toggleMenu()"><i class="fa-brands fa-snapchat"></i> Snapchat</a></li>
       </ul>
     </nav>
   </header>
 
-  <div class="container">
+  <main class="container">
 
     <h1 class="logo">Excuus<span>Expert</span></h1>
-    <p class="description">De slimste smoesgenerator voor school.</p>
-
-    <!-- INSTANT PANIEKKNOP -->
-    <div class="panic-container">
-      <button id="panicBtn" onclick="generatePanicExcuse()">
-        <i class="fa-solid fa-triangle-exclamation"></i> INSTANT PANIEKKNOP
-      </button>
-    </div>
+    <p class="description">De slimste smoesgenerator voor school. Kies wat er is gebeurd en krijg direct een geloofwaardige smoes.</p>
 
     <label for="probleem">Wat is er gebeurd?</label>
     <div class="select-wrapper">
@@ -154,7 +192,7 @@
       <ol class="history-list" id="historyList"></ol>
     </section>
 
-  </div>
+  </main>
 
  <div id="profileModal" class="modal-overlay" onclick="closeProfileModal(event)">
     <div class="modal-card profile-card" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
@@ -188,57 +226,46 @@
     </div>
   </div>
 
-  <!-- PANIEK MODAL POP-UP -->
-  <div id="panicModal" class="modal-overlay" onclick="closePanicModal(event)">
-    <div class="modal-card">
-      <div class="modal-header">
-        <span class="modal-badge">🚨 SPOEDEXCUUS</span>
-        <button class="close-btn" onclick="closePanicModalDirect()">&times;</button>
-      </div>
-      <p id="panicText" class="modal-text"></p>
-      <button class="copy-panic-btn" onclick="copyPanicExcuse()">
-        <i class="fa-regular fa-copy"></i> Kopieer Excuus
-      </button>
-    </div>
-  </div>
-
   <!-- INSTUUR MODAL POP-UP -->
   <div id="submitModal" class="modal-overlay" onclick="closeSubmitModal(event)">
-    <div class="modal-card submit-card">
+    <div class="modal-card submit-card" role="dialog" aria-modal="true" aria-label="Smoes insturen">
       <div class="modal-header">
-        <span class="modal-badge" style="background: rgba(108, 99, 255, 0.2); color: #a5b4fc;">💡 SMOES INSTUREN</span>
-        <button class="close-btn" onclick="closeSubmitModalDirect()">&times;</button>
+        <span class="modal-badge submit-badge">💡 SMOES INSTUREN</span>
+        <button class="close-btn" type="button" onclick="closeSubmitModalDirect()" aria-label="Sluiten">&times;</button>
       </div>
       
       <form id="excuseForm" action="https://formspree.io/f/xkjngdbl" method="POST" onsubmit="handleFormSubmit(event)">
-        <textarea name="smoes" class="submit-textarea" placeholder="Typ hier jouw meesterlijke smoes..." required></textarea>
-        <button type="submit" class="generate-button" style="margin-top: 0; padding: 12px;">
+        <textarea name="smoes" class="submit-textarea" placeholder="Typ hier jouw meesterlijke smoes... (vermeld ook de categorie en strengheid)" aria-label="Jouw smoes" required></textarea>
+        <p class="profile-status" id="submitStatus" role="status" aria-live="polite" style="margin: -8px 0 12px; text-align:center;"></p>
+        <button type="submit" id="submitBtn" class="generate-button" style="margin-top: 0; padding: 12px;">
           🚀 Versturen
         </button>
       </form>
     </div>
   </div>
   
-  <!-- INKLAPBAAR SEO-BLOK -->
-  <div class="seo-accordion-container" style="max-width: 600px; margin: 40px auto 20px auto; padding: 0 20px;">
-    <details style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px; cursor: pointer;">
-      <summary style="font-weight: 600; color: #a5b4fc; outline: none; list-style: none; display: flex; justify-content: space-between; align-items: center;">
-        <span>ℹ️ Over ExcuusExpert</span>
-        <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem;"></i>
-      </summary>
-      <div class="seo-content" style="margin-top: 12px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; text-align: left; cursor: default;">
-        <h2 style="font-size: 1rem; color: #fff; margin-bottom: 8px;">Waarom ExcuusExpert?</h2>
-        <p>Zit je in de knel op de middelbare school? ExcuusExpert helpt je direct uit de brand met de meest geloofwaardige <strong>schoolsmoesjes</strong>. Of je nu een <strong>excuus voor te laat komen</strong> zoekt, je <strong>huiswerk vergeten</strong> bent, of simpelweg <strong>te weinig tijd gehad</strong> hebt voor je proefwerk; onze slimme generator past het excuus aan op de strengheid van jouw docent. Gebruik de instant panieknop voor acute situaties in de gang!</p>
-        <p style="margin-top: 8px;">Onze database bevat waterdichte smoesjes voor school. Mocht je zelf een goede smoes hebben, dan kan je altijd eentje insturen! Vermeld dan wel even in welke categorie en welke strengheid hij moet.</p>
-      </div>
-    </details>
-  </div>
+  <!-- UITLEG (zichtbaar voor Google en bezoekers) -->
+  <section class="seo-section" aria-labelledby="seoTitle">
+    <h2 id="seoTitle">Waarom ExcuusExpert?</h2>
+    <p>Zit je in de knel op school? <strong>ExcuusExpert</strong> is een gratis <strong>smoesgenerator voor school</strong>: je kiest wat er is gebeurd, stelt in hoe streng je docent is en krijgt direct een passende smoes. Hoe strenger de docent, hoe formeler en verantwoordelijker de formulering klinkt.</p>
+
+    <h3>Smoes voor te laat komen</h3>
+    <p>Bus gemist, fiets kapot of de wekker niet gehoord? Kies <em>Te laat</em> en krijg een <strong>excuus voor te laat komen</strong> dat past bij jouw docent.</p>
+
+    <h3>Huiswerk vergeten</h3>
+    <p>Schrift thuis laten liggen of de deadline verkeerd gelezen? Een goede <strong>smoes voor vergeten huiswerk</strong> is maar één klik weg.</p>
+
+    <h3>Proefwerk niet geleerd, boek vergeten of te weinig tijd</h3>
+    <p>Ook voor een <strong>proefwerk dat je niet hebt geleerd</strong>, een <strong>vergeten boek</strong> of <strong>te weinig tijd</strong> vind je een smoes. Past je situatie er niet tussen? Kies <em>Ander onderwerp</em> en laat de slimme generator een eigen smoes voor je schrijven (5 per dag gratis).</p>
+
+    <p class="seo-tip">💡 <strong>Tip:</strong> een smoes werkt het best als hij klein, logisch en eerlijk-klinkend is, en als je erbij zegt hoe je het goed gaat maken. Eerlijk zijn werkt trouwens meestal nóg beter. Heb je zelf een topsmoes? Stuur hem in via het menu!</p>
+  </section>
 
 <!-- FOOTER -->
   <footer class="footer-text">
     <p>Made by hessel.</p>
-    <a href="https://snapchat.com/add/Excuus-Expert" target="_blank" rel="noopener noreferrer" class="footer-snapchat-btn"></a>
-    <p>V6.7</p>
+    <a href="https://snapchat.com/add/Excuus-Expert" target="_blank" rel="noopener noreferrer" class="footer-snapchat-btn"><i class="fa-brands fa-snapchat" aria-hidden="true"></i> Volg ons op Snapchat</a>
+    <p>V7.0</p>
   </footer>
 
   <!-- DIT STUKJE CODE HIER TUSSEN PLAKKEN -->
@@ -255,6 +282,6 @@
   </script>
 
   <!-- Verander telkens het nummer achter ?v= als je een update doet -->
-  <script src="script.js?v=6.8"></script>
+  <script src="script.js?v=7.0"></script>
 </body>
 </html>
