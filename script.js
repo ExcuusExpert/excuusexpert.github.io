@@ -958,6 +958,21 @@ if (slider && waarde) {
 // Vul hier de URL van jouw Worker in nadat je hem hebt aangemaakt:
 const EXCUSE_API_URL = "https://excuusexpert-api.hagedoornhessel.workers.dev";
 
+// Anoniem apparaat-ID: bepaalt je 5 gratis smoezen per dag (niet je IP-adres, dus ook op school)
+function getDeviceId() {
+  const key = "excuusExpertDeviceId";
+  try {
+    const bestaand = localStorage.getItem(key);
+    if (bestaand && /^[A-Za-z0-9_-]{16,64}$/.test(bestaand)) return bestaand;
+  } catch (error) { /* opslag geblokkeerd */ }
+
+  const nieuw = (window.crypto && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : Array.from({ length: 4 }, () => Math.random().toString(36).slice(2, 10)).join("");
+  try { localStorage.setItem(key, nieuw); } catch (error) { /* alleen voor deze sessie */ }
+  return nieuw;
+}
+
 function apiError(message) {
   const error = new Error(message);
   error.isApiError = true;
@@ -972,16 +987,22 @@ async function generateExcuse(topic, strictness) {
   const response = await fetch(EXCUSE_API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ topic, strictness, premiumCode: localProfile.premiumCode })
+    body: JSON.stringify({ topic, strictness, premiumCode: localProfile.premiumCode, deviceId: getDeviceId() })
   });
   const data = await response.json().catch(() => ({}));
 
+  if (response.status === 429 && data.error === "slow") {
+    throw apiError("Rustig aan! Wacht een paar seconden voordat je opnieuw een smoes maakt.");
+  }
+  if (response.status === 429 && data.error === "ipcap") {
+    throw apiError("Via dit netwerk zijn vandaag al heel veel eigen smoezen gemaakt. Probeer het morgen opnieuw.");
+  }
   if (response.status === 429 && data.error === "limit") {
     throw apiError(data.premium
       ? "Je dagelijkse premium-limiet is bereikt. Probeer het morgen opnieuw."
       : `Je hebt vandaag je ${data.limit} gratis eigen smoezen gebruikt. Wil je er meer? Voeg een premiumcode toe in je profiel (vraag er een via Snapchat).`);
   }
-  if (response.status === 503) throw apiError("Het is nu erg druk. Probeer het later opnieuw.");
+  if (response.status === 503) throw apiError("De AI is op dit moment even vol (de dagelijkse limiet is bereikt). Probeer het over een poosje of morgen opnieuw. Je gratis smoezen worden hierbij niet afgeschreven.");
   if (!response.ok || typeof data.excuse !== "string") {
     throw apiError("Er ging iets mis bij het maken van je smoes. Probeer het opnieuw.");
   }
@@ -993,8 +1014,36 @@ async function generateExcuse(topic, strictness) {
 ----------------------------- */
 let vorigeIndex = -1;
 
+// Anti-spam: na elke smoes moet je even wachten voor de volgende
+const KNOP_TEKST = "✨ Genereer mijn smoes";
+const COOLDOWN_VAST_MS = 2000;   // vaste onderwerpen
+const COOLDOWN_AI_MS = 8000;     // eigen onderwerp (AI)
+const COOLDOWN_FOUT_MS = 3000;   // na een mislukte poging
+let cooldownTot = 0;
+let cooldownTimer = null;
+
+function startCooldown(ms) {
+  cooldownTot = Date.now() + ms;
+  clearInterval(cooldownTimer);
+  knop.disabled = true;
+
+  const tick = () => {
+    const over = Math.ceil((cooldownTot - Date.now()) / 1000);
+    if (over <= 0) {
+      clearInterval(cooldownTimer);
+      knop.disabled = false;
+      knop.textContent = KNOP_TEKST;
+      return;
+    }
+    knop.textContent = `Even wachten (${over}s)`;
+  };
+  tick();
+  cooldownTimer = setInterval(tick, 250);
+}
+
 if (knop) {
   knop.addEventListener("click", async function () {
+    if (Date.now() < cooldownTot) return; // nog aan het wachten
     const selectedTopic = probleemSelect.value;
     const topic = selectedTopic === "custom" ? customTopicInput.value.trim() : selectedTopic;
     const strictness = Number(slider.value);
@@ -1018,12 +1067,14 @@ if (knop) {
       resultaat.style.display = "block";
       addExcuseToHistory(selectedTopic, opties[willekeurigeIndex]);
       generatorStatus.textContent = "";
+      startCooldown(COOLDOWN_VAST_MS);
       return;
     }
 
     knop.disabled = true;
     knop.textContent = "Even bedenken...";
     generatorStatus.textContent = "Een smoes op maat wordt gemaakt...";
+    let cooldownMs = COOLDOWN_AI_MS;
 
     try {
       const data = await generateExcuse(topic, strictness);
@@ -1035,12 +1086,12 @@ if (knop) {
         : `Nog ${data.remaining} van ${data.limit} eigen smoezen vandaag${data.premium ? " (premium)" : ""}.`;
     } catch (error) {
       console.error("Smoes-aanvraag mislukt:", error);
+      cooldownMs = COOLDOWN_FOUT_MS;
       generatorStatus.textContent = error.isApiError
         ? error.message
         : "Verbinding mislukt. Controleer je internet en probeer het opnieuw.";
     } finally {
-      knop.disabled = false;
-      knop.textContent = "✨ Genereer mijn smoes";
+      startCooldown(cooldownMs);
     }
   });
 }
