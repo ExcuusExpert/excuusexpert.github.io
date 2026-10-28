@@ -1014,6 +1014,50 @@ async function generateExcuse(topic, strictness) {
 ----------------------------- */
 let vorigeIndex = -1;
 
+// Link vanaf een onderwerp-pagina (bv. /?onderwerp=te-laat) kiest het onderwerp alvast
+const ONDERWERP_MAP = {
+  "te-laat": "Te laat",
+  "huiswerk-vergeten": "Huiswerk vergeten",
+  "proefwerk-niet-geleerd": "Proefwerk niet geleerd",
+  "boek-vergeten": "Boek vergeten",
+  "te-weinig-tijd": "Te weinig tijd gehad"
+};
+const onderwerpParam = new URLSearchParams(window.location.search).get("onderwerp");
+if (probleemSelect && ONDERWERP_MAP[onderwerpParam]) probleemSelect.value = ONDERWERP_MAP[onderwerpParam];
+
+// Smoes tonen met een korte "typemachine"-animatie
+let typeTimer = null;
+function toonSmoes(tekst) {
+  clearInterval(typeTimer);
+  resultaatTekst.dataset.full = tekst;
+  resultaat.style.display = "block";
+  resultaat.classList.remove("pop");
+  void resultaat.offsetWidth;
+  resultaat.classList.add("pop");
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || tekst.length < 2) {
+    resultaatTekst.textContent = tekst;
+    return;
+  }
+  const stap = Math.max(1, Math.ceil(tekst.length / 45));
+  let i = 0;
+  resultaatTekst.textContent = "";
+  typeTimer = setInterval(() => {
+    i += stap;
+    resultaatTekst.textContent = tekst.slice(0, i);
+    if (i >= tekst.length) clearInterval(typeTimer);
+  }, 16);
+}
+
+// Leuk label bij de strengheid-schuif
+const strengheidLabel = document.getElementById("strengheidLabel");
+function updateStrengheidLabel() {
+  if (!strengheidLabel || !slider) return;
+  const v = Number(slider.value);
+  strengheidLabel.textContent = v <= 2 ? "superchill 😎" : v <= 4 ? "relaxed 🙂" : v <= 6 ? "gemiddeld 😐" : v <= 8 ? "streng 😬" : "bikkelhard 😈";
+}
+if (slider) { slider.addEventListener("input", updateStrengheidLabel); updateStrengheidLabel(); }
+
 // Anti-spam: na elke smoes moet je even wachten voor de volgende
 const KNOP_TEKST = "✨ Genereer mijn smoes";
 const COOLDOWN_VAST_MS = 2000;   // vaste onderwerpen
@@ -1063,8 +1107,7 @@ if (knop) {
       } while (willekeurigeIndex === vorigeIndex && opties.length > 1);
 
       vorigeIndex = willekeurigeIndex;
-      resultaatTekst.textContent = opties[willekeurigeIndex];
-      resultaat.style.display = "block";
+      toonSmoes(opties[willekeurigeIndex]);
       addExcuseToHistory(selectedTopic, opties[willekeurigeIndex]);
       generatorStatus.textContent = "";
       startCooldown(COOLDOWN_VAST_MS);
@@ -1078,8 +1121,7 @@ if (knop) {
 
     try {
       const data = await generateExcuse(topic, strictness);
-      resultaatTekst.textContent = data.excuse;
-      resultaat.style.display = "block";
+      toonSmoes(data.excuse);
       addExcuseToHistory(topic, data.excuse);
       generatorStatus.textContent = data.codeInvalid
         ? "Deze premiumcode is niet geldig, dus de gratis limiet is gebruikt."
@@ -1101,7 +1143,7 @@ if (knop) {
 ----------------------------- */
 if (copyBtn) {
   copyBtn.addEventListener("click", async () => {
-    const smoesTekst = resultaatTekst ? resultaatTekst.textContent : "";
+    const smoesTekst = resultaatTekst ? (resultaatTekst.dataset.full || resultaatTekst.textContent) : "";
     
     if (!smoesTekst) {
       const origineleTekst = copyBtn.textContent;
@@ -1126,7 +1168,7 @@ if (copyBtn) {
 ----------------------------- */
 if (shareBtn) {
   shareBtn.addEventListener("click", async () => {
-    const smoesTekst = resultaatTekst ? resultaatTekst.textContent : "";
+    const smoesTekst = resultaatTekst ? (resultaatTekst.dataset.full || resultaatTekst.textContent) : "";
 
     if (!smoesTekst) {
       const origineleShareTekst = shareBtn.textContent;

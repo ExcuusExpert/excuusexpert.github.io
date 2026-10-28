@@ -28,6 +28,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#08090e">
   <link rel="canonical" href="https://excuusexpert.github.io/">
+  <link rel="alternate" hreflang="nl" href="https://excuusexpert.github.io/">
   <meta name="google-site-verification" content="6CH9S9xC1Fp_FROwEj38SJQM01kB6wiO9QQFOhzRPNw" />
 
   <!-- Favicon -->
@@ -87,7 +88,7 @@
   <script data-goatcounter="https://excuusexpert.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
   <!-- 3. Cache Busting op je CSS (voeg ?v=2.0 toe) -->
-  <link rel="stylesheet" href="style.css?v=2.2">
+  <link rel="stylesheet" href="style.css?v=2.3">
 </head>
 
 <body>
@@ -122,7 +123,7 @@
 
   <main class="container">
 
-    <h1 class="logo">Excuus<span>Expert</span></h1>
+    <h1 class="logo">Excuus<span>Expert</span><span class="sr-only"> – smoesgenerator voor school</span></h1>
     <p class="description">De slimste smoesgenerator voor school. Kies wat er is gebeurd en krijg direct een geloofwaardige smoes.</p>
 
     <label for="probleem">Wat is er gebeurd?</label>
@@ -156,6 +157,7 @@
       >
       <div class="strength-display">
         Strengheid: <span class="strength-number"><span id="strengheidWaarde">5</span>/10</span>
+        <span class="strength-label" id="strengheidLabel">gemiddeld 😐</span>
       </div>
     </div>
 
@@ -258,6 +260,9 @@
     <h3>Proefwerk niet geleerd, boek vergeten of te weinig tijd</h3>
     <p>Ook voor een <strong>proefwerk dat je niet hebt geleerd</strong>, een <strong>vergeten boek</strong> of <strong>te weinig tijd</strong> vind je een smoes. Past je situatie er niet tussen? Kies <em>Ander onderwerp</em> en laat de slimme generator een eigen smoes voor je schrijven (5 per dag gratis).</p>
 
+    <h3>Smoezen per situatie</h3>
+    <ul class="seo-links"><li><a href="smoes-te-laat.html">Smoes voor te laat komen</a></li><li><a href="smoes-huiswerk-vergeten.html">Smoes voor huiswerk vergeten</a></li><li><a href="smoes-proefwerk-niet-geleerd.html">Smoes voor proefwerk niet geleerd</a></li><li><a href="smoes-boek-vergeten.html">Smoes voor boek vergeten</a></li><li><a href="smoes-te-weinig-tijd.html">Smoes voor te weinig tijd gehad</a></li></ul>
+
     <p class="seo-tip">💡 <strong>Tip:</strong> een smoes werkt het best als hij klein, logisch en eerlijk-klinkend is, en als je erbij zegt hoe je het goed gaat maken. Eerlijk zijn werkt trouwens meestal nóg beter. Heb je zelf een topsmoes? Stuur hem in via het menu!</p>
   </section>
 
@@ -265,7 +270,7 @@
   <footer class="footer-text">
     <p>Made by hessel.</p>
     <a href="https://snapchat.com/add/Excuus-Expert" target="_blank" rel="noopener noreferrer" class="footer-snapchat-btn"><i class="fa-brands fa-snapchat" aria-hidden="true"></i> Volg ons op Snapchat</a>
-    <p>V7.2</p>
+    <p>V7.3</p>
   </footer>
 
   <!-- DIT STUKJE CODE HIER TUSSEN PLAKKEN -->
@@ -282,6 +287,6 @@
   </script>
 
   <!-- Verander telkens het nummer achter ?v= als je een update doet -->
-  <script src="script.js?v=7.2"></script>
+  <script src="script.js?v=7.3"></script>
 </body>
 </html>
