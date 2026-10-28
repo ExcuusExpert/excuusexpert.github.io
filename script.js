@@ -843,6 +843,7 @@ function updateProfileView() {
 function openProfileModal() {
   updateProfileView();
   profileStatus.textContent = "";
+  profileStatus.classList.remove("profile-status-ok");
   profileModal.style.display = "flex";
   profileNameInput.focus();
 }
@@ -867,8 +868,10 @@ profileForm.addEventListener("submit", (event) => {
   if (writeLocalData(profileStorageKey, localProfile)) {
     sessionStorage.removeItem("excuusExpertGroqApiKey");
     updateProfileView();
-    profileStatus.textContent = "Profiel opgeslagen op dit apparaat.";
+    profileStatus.classList.add("profile-status-ok");
+    profileStatus.textContent = "✅ Profiel opgeslagen!";
   } else {
+    profileStatus.classList.remove("profile-status-ok");
     profileStatus.textContent = "Opslaan is niet gelukt. Controleer de opslaginstellingen van je browser.";
   }
 });
@@ -879,6 +882,7 @@ document.getElementById("clearProfileBtn").addEventListener("click", () => {
   localStorage.removeItem(profileStorageKey);
   sessionStorage.removeItem("excuusExpertGroqApiKey");
   updateProfileView();
+  profileStatus.classList.remove("profile-status-ok");
   profileStatus.textContent = "Profiel verwijderd. Je geschiedenis is bewaard.";
 });
 
