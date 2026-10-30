@@ -1004,7 +1004,9 @@ async function generateExcuse(topic, strictness) {
   if (response.status === 429 && data.error === "limit") {
     throw apiError(data.premium
       ? "Je dagelijkse premium-limiet is bereikt. Probeer het morgen opnieuw."
-      : `Je hebt vandaag je ${data.limit} gratis eigen smoezen gebruikt. Wil je er meer? Voeg een premiumcode toe in je profiel (vraag er een via Snapchat).`);
+      : data.codeExpired
+        ? `Je premiumcode is verlopen (die is 3 weken geldig) en je ${data.limit} gratis eigen smoezen van vandaag zijn op. Vraag een nieuwe code aan via Snapchat.`
+        : `Je hebt vandaag je ${data.limit} gratis eigen smoezen gebruikt. Wil je er meer? Voeg een premiumcode toe in je profiel (vraag er een via Snapchat).`);
   }
   if (response.status === 503) throw apiError("De AI is op dit moment even vol (de dagelijkse limiet is bereikt). Probeer het over een poosje of morgen opnieuw. Je gratis smoezen worden hierbij niet afgeschreven.");
   if (!response.ok || typeof data.excuse !== "string") {
@@ -1127,9 +1129,16 @@ if (knop) {
       const data = await generateExcuse(topic, strictness);
       toonSmoes(data.excuse);
       addExcuseToHistory(topic, data.excuse);
-      generatorStatus.textContent = data.codeInvalid
-        ? "Deze premiumcode is niet geldig, dus de gratis limiet is gebruikt."
-        : `Nog ${data.remaining} van ${data.limit} eigen smoezen vandaag${data.premium ? " (premium)" : ""}.`;
+      if (data.codeInvalid) {
+        generatorStatus.textContent = "Deze premiumcode is niet geldig, dus de gratis limiet is gebruikt.";
+      } else if (data.codeExpired) {
+        generatorStatus.textContent = `Je premiumcode is verlopen (3 weken geldig), dus de gratis limiet is gebruikt. Nog ${data.remaining} van ${data.limit} eigen smoezen vandaag.`;
+      } else if (data.premium) {
+        const dagen = data.premiumDaysLeft;
+        generatorStatus.textContent = `Nog ${data.remaining} van ${data.limit} eigen smoezen vandaag (premium, nog ${dagen} ${dagen === 1 ? "dag" : "dagen"} geldig).`;
+      } else {
+        generatorStatus.textContent = `Nog ${data.remaining} van ${data.limit} eigen smoezen vandaag.`;
+      }
     } catch (error) {
       console.error("Smoes-aanvraag mislukt:", error);
       cooldownMs = COOLDOWN_FOUT_MS;
