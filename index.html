@@ -1,27 +1,9 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta name="google-adsense-account" content="ca-pub-7016523155337156">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-7016523155337156">
-  <!-- 1. Dwing de browser om géén oude versie op te slaan (Geen Cache) -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7016523155337156"
-     crossorigin="anonymous"></script>
-  <!-- 2. Verwijder direct eventuele oude Service Workers van de zoekmachine -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        for(let registration of registrations) {
-          registration.unregister();
-        }
-      });
-    }
-  </script>
-
   <title>Smoesgenerator voor school: gratis smoesjes | ExcuusExpert</title>
 
   <!-- Google SEO -->
@@ -91,7 +73,7 @@
   <script data-goatcounter="https://excuusexpert.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
   <!-- 3. Cache Busting op je CSS (voeg ?v=2.0 toe) -->
-  <link rel="stylesheet" href="style.css?v=2.4">
+  <link rel="stylesheet" href="style.css?v=7.5">
 </head>
 
 <body>
@@ -211,14 +193,13 @@
         <input class="profile-input" id="profileName" type="text" maxlength="40" autocomplete="name" placeholder="Bijvoorbeeld: Alex" required>
 
         <label for="profilePremiumCode">Premiumcode (optioneel)</label>
-        <input class="profile-input" id="profilePremiumCode" type="text" autocomplete="off" spellcheck="false" placeholder="Bijvoorbeeld: KLAS-4D9Q">
+        <input class="profile-input" id="profilePremiumCode" type="text" autocomplete="off" spellcheck="false" placeholder="Bijvoorbeeld: K7QM-XR4D-9WTP">
         
         <p class="profile-security-note">Gratis kun je 5 eigen smoezen per dag maken (per apparaat, dus ook op school). Met een premiumcode kun je er veel meer maken. Een code is 3 weken geldig vanaf het moment dat je hem voor het eerst gebruikt. Naam, code en geschiedenis worden alleen in deze browser opgeslagen. Premium codes zijn nog in ontwikkeling. Een premium code kan nu alleen nog bij mij worden aangevraagd. </p>
         
-        <!-- Ko-fi Widget Knop netjes gecentreerd -->
-        <div style="text-align: center; margin: 15px 0;">
-          <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
-          <script type='text/javascript'>kofiwidget2.init('Support me!', '#a855f7', 'R1E229KQ8W');kofiwidget2.draw();</script>
+        <!-- Ko-fi: gewone link, geen extern script -->
+        <div class="kofi-wrap">
+          <a class="footer-kofi-btn" href="https://ko-fi.com/R1E229KQ8W" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-mug-hot" aria-hidden="true"></i> Support me!</a>
         </div>
 
         <p class="profile-status" id="profileStatus" role="status" aria-live="polite"></p>
@@ -273,23 +254,12 @@
   <footer class="footer-text">
     <p>Made by hessel.</p>
     <a href="https://snapchat.com/add/Excuus-Expert" target="_blank" rel="noopener noreferrer" class="footer-snapchat-btn"><i class="fa-brands fa-snapchat" aria-hidden="true"></i> Volg ons op Snapchat</a>
-    <p>V7.4</p>
+    <p class="footer-links"><a href="privacy.html">Privacyverklaring</a> · <button type="button" class="footer-link-btn" onclick="openConsentSettings()">Advertentie-instellingen</button></p>
+    <p>V7.5</p>
   </footer>
 
-  <!-- DIT STUKJE CODE HIER TUSSEN PLAKKEN -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        for (let registration of registrations) {
-          registration.unregister().then(function() {
-            window.location.reload(true);
-          });
-        }
-      });
-    }
-  </script>
-
   <!-- Verander telkens het nummer achter ?v= als je een update doet -->
-  <script src="script.js?v=7.4"></script>
+  <script src="consent.js?v=7.5"></script>
+  <script src="script.js?v=7.5"></script>
 </body>
 </html>
